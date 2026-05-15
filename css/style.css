@@ -1,3 +1,47 @@
+body {
+  background: white;
+  color: black;
+  display: flex;
+  justify-content: center;
+  /* padding: 40px; */
+}
+
+/* media means "only apply these CSS rules if a certain condition is true*/
+/* prefers-color-scheme is a system-level browser setting exposed to CSS*/
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: white;
+  }
+}
+
+.main-wrapper {
+    max-width: 700px;
+    width: 100%;
+}
+
+/* .container, .add-ons-container {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    text-align: center;
+} */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This centers items horizontally */
+    text-align: center;   /* This centers the text inside paragraphs */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
 .button {
   border: none;
   background-color: aqua;
