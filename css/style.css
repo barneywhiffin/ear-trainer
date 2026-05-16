@@ -16,9 +16,9 @@ body {
 }
 
 .main-wrapper {
-    min-height: 100vh /* "make the page at least full screen height" */
+    min-height: 100vh; /* "make the page at least full screen height" */
     /* max-width: 700px; */
-    /* width: 100%; */
+    width: 100%; /* to avoid inconsistent width between pages */
     /* display: flex; */
     /* margin-top: 20px; */
     /* padding: 20px; */
