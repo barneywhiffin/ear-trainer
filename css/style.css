@@ -57,9 +57,17 @@ body {
     align-items: center; /* vertically align nicely */
 }
 
-.nav-links {
+.nav-links a {
     display: flex;
     gap: 20px;
+    /* font-weight: bold; */
+    text-decoration: none;
+    color: white;
+}
+
+/* when a link is hovered over, change colour to blue */
+.nav-links a:hover {
+    color: lightblue;
 }
 
 main {
