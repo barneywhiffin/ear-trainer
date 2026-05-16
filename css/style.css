@@ -16,37 +16,90 @@ body {
 }
 
 .main-wrapper {
-    max-width: 700px;
-    width: 100%;
+    min-height: 100vh /* "make the page at least full screen height" */
+    /* max-width: 700px; */
+    /* width: 100%; */
+    /* display: flex; */
+    /* margin-top: 20px; */
+    /* padding: 20px; */
+    /* this will only justify if display flex is on !! */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* text-align: center; */
 }
 
-/* .container, .add-ons-container {
-    background-color: var(--white);
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    text-align: center;
-} */
+.site-header {
+    padding: 20px 0; /* "add top/bottom breathing room" */
+    background: black;
+    color: white;
+}
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* This centers items horizontally */
-    text-align: center;   /* This centers the text inside paragraphs */
+    max-width: 1200px; /* limit width */
+    margin: 0 auto; /* center it */
+    padding: 20px; /* prevent touching edges */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* background-color: aliceblue; */
+    /* margin-top: 80px; */
+    /* this adds space inside container from top */
+    /* padding-top: 50px; */
+    /* border-radius: 40px; */
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+    /* the align items command is a hard override for other aligns*/
+    /* align-items: center;  */
+    /* text-align: center;  */
 }
 
-h1 {
+.navbar {
+    display: flex;
+    justify-content: space-between; /* put logo left and links right */
+    align-items: center; /* vertically align nicely */
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+main {
+    padding: 40px 0;
+}
+
+section {
+    padding: 60px 0;
+}
+
+.hero {
+    padding: 100px 0;
+}
+
+footer {
+    background: #111;
+    color: white;
+    padding: 40px 0;
+}
+
+/* h1 {    
     text-align: center;
     margin-bottom: 25px;
     font-size: 1.8rem;
+} */
+
+.card {
+    background: teal;
+    color: white;
+    /* text-align: center; */
+    padding: 20px;
+    border-radius: 40px;
 }
 
 .button {
   border: none;
-  background-color: aqua;
-  color: rgb(0, 0, 0);
+  background-color: teal;
+  color: white;
   padding: 16px 32px;
+  border-radius: 40px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
