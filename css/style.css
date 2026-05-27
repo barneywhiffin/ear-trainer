@@ -13,27 +13,27 @@ body {
 }
 
 header {
-    padding: 20px 0; /* "add top/bottom breathing room" */
+    padding: 20px 0;
     background: teal;
     color: white;
 }
 
 .container {
-    max-width: 1000px; /* limit width */
+    max-width: 1000px;
     width: 90%;
-    margin: 0 auto; /* center it */
+    margin: 0 auto;
 }
 
 nav {
     display: flex;
-    justify-content: space-between; /* put logo left and links right */
-    align-items: center; /* vertically align nicely */
+    justify-content: space-between;
+    align-items: center;
 }
 
 .nav-links a {
     display: flex;
     gap: 20px;
-    /* font-weight: bold; */
+    /* font-weight: bold;   */
     text-decoration: none;
     color: white;
 }
