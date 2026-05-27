@@ -67,6 +67,11 @@ footer {
     background: teal;
     color: white;
     padding: 20px 0;
+    text-align: center;
+}
+
+footer a {
+    color: white;
 }
 
 /* h1 {    
