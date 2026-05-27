@@ -1,57 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
-  background: white;
+  background: rgb(191, 219, 228);
   color: black;
-  display: flex;
-  justify-content: center;
-  /* padding: 40px; */
+  min-height: 100vh;
+  width: 100%;
 }
 
-/* media means "only apply these CSS rules if a certain condition is true*/
-/* prefers-color-scheme is a system-level browser setting exposed to CSS*/
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #121212;
-    color: white;
-  }
-}
-
-.main-wrapper {
-    min-height: 100vh; /* "make the page at least full screen height" */
-    /* max-width: 700px; */
-    width: 100%; /* to avoid inconsistent width between pages */
-    /* display: flex; */
-    /* margin-top: 20px; */
-    /* padding: 20px; */
-    /* this will only justify if display flex is on !! */
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* text-align: center; */
-}
-
-.site-header {
+header {
     padding: 20px 0; /* "add top/bottom breathing room" */
-    background: black;
+    background: teal;
     color: white;
 }
 
 .container {
-    max-width: 1200px; /* limit width */
+    max-width: 1000px; /* limit width */
+    width: 90%;
     margin: 0 auto; /* center it */
-    padding: 20px; /* prevent touching edges */
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* background-color: aliceblue; */
-    /* margin-top: 80px; */
-    /* this adds space inside container from top */
-    /* padding-top: 50px; */
-    /* border-radius: 40px; */
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
-    /* the align items command is a hard override for other aligns*/
-    /* align-items: center;  */
-    /* text-align: center;  */
 }
 
-.navbar {
+nav {
     display: flex;
     justify-content: space-between; /* put logo left and links right */
     align-items: center; /* vertically align nicely */
@@ -83,7 +54,7 @@ section {
 }
 
 footer {
-    background: #111;
+    background: teal;
     color: white;
     padding: 40px 0;
 }
@@ -115,4 +86,11 @@ footer {
   margin: 4px 2px;
   transition-duration: 0.4s;
   cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: white;
+  }
 }
