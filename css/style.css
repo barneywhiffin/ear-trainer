@@ -100,8 +100,13 @@ h3 a:hover {
 
 main {
     /* padding: 60px 0; */
+    /* background: rgb(217, 238, 244); */
     display: grid;
     grid-template-rows: auto 1fr;
+}
+
+main button {
+    margin-top: 30px;
 }
 
 .hero {
