@@ -14,7 +14,7 @@ body {
 
 header {
     padding: 20px 0;
-    background: teal;
+    background: rgb(99, 99, 179);
     color: white;
 }
 
@@ -36,50 +36,6 @@ nav a {
     text-decoration: none;
 }
 
-.nav-links a {
-    display: flex;
-    gap: 20px;
-    /* font-weight: bold;   */
-    text-decoration: none;
-    color: white;
-}
-
-/* when a link is hovered over, change colour to blue */
-.nav-links a:hover {
-    color: lightblue;
-}
-
-main {
-    /* padding: 60px 0; */
-    display: grid;
-    grid-template-rows: auto 1fr;
-}
-
-.hero {
-    padding: 40px 0;
-    text-align: center;
-}
-
-section {
-    /* border: 2px solid white; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    /* margin: 0 auto; */
-}
-
-footer {
-    background: teal;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-}
-
-footer a {
-    color: white;
-}
-
 h1 {    
     /* text-align: center; */
     /* margin-bottom: 25px; */
@@ -88,35 +44,15 @@ h1 {
     padding-left: 10px;
 }
 
-.card {
-    background: teal;
-    color: white;
-    /* text-align: center; */
-    padding: 20px;
-    border-radius: 40px;
-}
-
-section button {
-  border: none;
-  background-color: teal;
-  color: white;
-  padding: 16px 32px;
-  border-radius: 40px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-}
-
 .dropdown {
     position: relative;
 }
 
 .dropdown button {
     border: none;
-    background-color: teal;
+    /* browsers interpret border none as lose all styling,
+    so we need to set transparent background to pull from header instead of body */
+    background: transparent;
     color: white;
 }
 
@@ -143,6 +79,51 @@ section button {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+main {
+    /* padding: 60px 0; */
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.hero {
+    padding: 80px 0;
+    text-align: center;
+}
+
+section {
+    /* border: 2px solid white; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    /* margin: 0 auto; */
+}
+
+section button {
+  border: none;
+  background-color: teal;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+footer {
+    background: teal;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+footer a {
+    color: white;
 }
 
 @media (prefers-color-scheme: dark) {
