@@ -4,7 +4,7 @@
 }
 
 body {
-  background: rgb(191, 219, 228);
+  background: rgb(217, 238, 244);
   color: black;
   min-height: 100vh;
   width: 100%;
@@ -36,15 +36,30 @@ nav a {
     text-decoration: none;
 }
 
+.nav-links {
+    display: flex;
+}
+
 h1 {    
-    /* text-align: center; */
-    /* margin-bottom: 25px; */
-    /* font-size: 1.8rem; */
     color: white;
     padding-left: 10px;
 }
 
+h3 {
+    margin-left: 25px;
+    text-decoration: none;
+}
+
+h3 a {
+    color: white;
+}
+
+h3 a:hover {
+    color: #eee;
+}
+
 .dropdown {
+    /* "use me as the coordinate system for positioned children" */
     position: relative;
 }
 
@@ -53,7 +68,9 @@ h1 {
     /* browsers interpret border none as lose all styling,
     so we need to set transparent background to pull from header instead of body */
     background: transparent;
+    font: inherit;
     color: white;
+    /* margin-right: 25px; */
 }
 
 .dropdown-content {
@@ -116,7 +133,7 @@ section button {
 }
 
 footer {
-    background: teal;
+    background: rgb(99, 99, 179);
     color: white;
     padding: 10px 0;
     text-align: center;
