@@ -134,8 +134,15 @@ section {
 
 .games-area {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
     margin-top: 80px;
+}
+
+.eq-game-freq-text {
+    display: flex;
+    gap: 5px;
 }
 
 .eq-game-box {

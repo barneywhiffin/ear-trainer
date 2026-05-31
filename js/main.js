@@ -17,25 +17,55 @@ if (myButton) {
     myButton.addEventListener('click', changeBackgroundColor);
 }
 
+function geometricArray(start, end, n) {
+    const ratio = Math.pow(end / start, 1 / (n - 1));
+    const arr = [];
+    for (let i = 0; i < n; i++) {
+
+        arr.push(start * Math.pow(ratio, i));
+
+    }
+    return arr;
+}
 
 const container = document.getElementById("line-container");
 const line = document.getElementById("line");
 
-container.addEventListener("mousemove", (e) => {
-    const rect = container.getBoundingClientRect();
-    const x = e.clientX - rect.left;
+// need to think of a way of automatically aligning this better with graph axis
+// , at all screen scalings
+const freqs = geometricArray(50, 11000, 100)
 
-    line.style.transform = `translateX(${x}px)`;
-});
+const freqText = document.getElementById("round-freq");
 
-container.addEventListener("mouseenter", () => {
-    line.style.display = "block";
-});
+if (container) {
+    container.addEventListener("mousemove", (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = e.clientX - rect.left;
 
-container.addEventListener("mouseleave", () => {
-    line.style.display = "none";
-});
+        line.style.transform = `translateX(${x}px)`;
+    });
 
-container.addEventListener('click', function(event) {
-    console.log("Mouse clicked at", event.offsetX, "pixels!");
-});
+    container.addEventListener("mouseenter", () => {
+        line.style.display = "block";
+    });
+
+    container.addEventListener("mouseleave", () => {
+        line.style.display = "none";
+    });
+
+    container.addEventListener('click', function(event) {
+        // fetch current width of container (const as new function each click)
+        const boxWidth = container.offsetWidth;
+        const mouseLocation = Math.round(100*event.offsetX/boxWidth)
+
+        console.log("Frequency guess:", freqs[mouseLocation]);
+
+        const newNum = Math.round(100*Math.random());
+
+        freqText.textContent = freqs[newNum];
+    });
+}
+
+// we need to fetch pixel width of container each time mouse clicked to account for screen changes
+// we need to have each click make visible a next round button?
+// or if auto next round (tickbox?) then change the rng displayed target freq
