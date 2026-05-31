@@ -9,7 +9,7 @@ function changeBackgroundColor() {
     
     // Apply that color to the body's background
     myBody.style.backgroundColor = randomColor;
-    console.log("The button was clicked!")
+    // console.log("The button was clicked!")
 }
 
 // 3. ONLY listen for the click event if the button actually exists on this page!
@@ -34,4 +34,8 @@ container.addEventListener("mouseenter", () => {
 
 container.addEventListener("mouseleave", () => {
     line.style.display = "none";
+});
+
+container.addEventListener('click', function(event) {
+    console.log("Mouse clicked at", event.offsetX, "pixels!");
 });
