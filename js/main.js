@@ -28,7 +28,7 @@ function geometricArray(start, end, n) {
     return arr;
 }
 
-const container = document.getElementById("line-container");
+const lineContainer = document.getElementById("line-container");
 const line = document.getElementById("line");
 
 const eqGameButton = document.getElementById("eq-game-button");
@@ -39,6 +39,7 @@ const freqs = geometricArray(35, 13000, 100)
 
 const roundFreqtext = document.getElementById("round-freq");
 const guessFreqText = document.getElementById("guess-freq");
+const resultText = document.getElementById("result");
 
 let round = 0;
 let clicks = 0;
@@ -47,9 +48,9 @@ let gameFreqs = [];
 if (eqGameButton) {
     eqGameButton.addEventListener('click', function(event) {
         if (round > clicks) {
-            container.style.border = "2px solid red";
+            lineContainer.style.border = "2px solid red";
             setTimeout(() => {
-                container.style.border = "none";
+                lineContainer.style.border = "none";
             }, 1000);
         }
         else {
@@ -60,35 +61,37 @@ if (eqGameButton) {
 
             roundFreqtext.textContent = Math.round(newFreq);
             gameFreqs.push(newFreq);
-            console.log(gameFreqs);
+
+            guessFreqText.textContent = "";
+            resultText.textContent = "";
+
         }
     })
 }
 
-if (container) {
-    container.addEventListener("mousemove", (e) => {
-        const rect = container.getBoundingClientRect();
+if (lineContainer) {
+    lineContainer.addEventListener("mousemove", (e) => {
+        const rect = lineContainer.getBoundingClientRect();
         const x = e.clientX - rect.left;
 
         line.style.transform = `translateX(${x}px)`;
     });
 
-    container.addEventListener("mouseenter", () => {
+    lineContainer.addEventListener("mouseenter", () => {
         line.style.display = "block";
     });
 
-    container.addEventListener("mouseleave", () => {
+    lineContainer.addEventListener("mouseleave", () => {
         line.style.display = "none";
     });
 
     // add start/next round button to generate numbers
 
-    container.addEventListener('click', function(event) {
+    lineContainer.addEventListener('click', function(event) {
 
         // change these to popup windows !!!
 
         if (clicks == round) {
-            console.log("no way jose");
             eqGameButton.style.background = "red";
             setTimeout(() => {
                 eqGameButton.style.background = "initial";
@@ -98,13 +101,28 @@ if (container) {
         else {
             clicks += 1;
 
+            // eventually allow custom tolerance
+            const floor = gameFreqs.at(-1)/2;
+            const ceiling = gameFreqs.at(-1)*2;
+            console.log("floor:", floor);
+            console.log("ceiling:", ceiling);
+
             // fetch current width of container (const as new function each click)
-            const boxWidth = container.offsetWidth;
+            const boxWidth = lineContainer.offsetWidth;
             const mouseLocation = Math.round(100*event.offsetX/boxWidth);
 
             // console.log("Frequency guess:", freqs[mouseLocation]);
             const guessFreq = Math.round(freqs[mouseLocation]);
             guessFreqText.textContent = guessFreq;
+
+            if (guessFreq > floor && guessFreq < ceiling) {
+                resultText.textContent = "Correct!"
+            }
+            else {
+                resultText.textContent = "Incorrect :("
+            }
+
+            
         }
 
     });
