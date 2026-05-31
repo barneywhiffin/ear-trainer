@@ -128,20 +128,46 @@ section {
     /* margin: 0 auto; */
 }
 
+.page-title {
+    padding: 20px;
+}
+
 .games-area {
     display: flex;
     justify-content: center;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .eq-game-box {
     /* border: 2px solid white; */
-    height: 130px;
-    width: 70%;
+    height: 150px;
+    width: 75%;
     max-width: 800px;
-    background: #121212;
+    background: #033a21;
     display: grid;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: auto 1fr auto;
+}
+
+.eq-game-box p {
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+#line-container {
+    position: relative;
+    /* width: 600px;
+    height: 300px; */
+    /* border: 1px solid #ccc; */
+}
+
+#line {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: white;
+    pointer-events: none; 
+    /* prevents the line from blocking mouse events */
 }
 
 .eq-game-box p {

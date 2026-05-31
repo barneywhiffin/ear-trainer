@@ -12,5 +12,26 @@ function changeBackgroundColor() {
     console.log("The button was clicked!")
 }
 
-// 3. Listen for the click event on the button
-myButton.addEventListener('click', changeBackgroundColor);
+// 3. ONLY listen for the click event if the button actually exists on this page!
+if (myButton) {
+    myButton.addEventListener('click', changeBackgroundColor);
+}
+
+
+const container = document.getElementById("line-container");
+const line = document.getElementById("line");
+
+container.addEventListener("mousemove", (e) => {
+    const rect = container.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+
+    line.style.transform = `translateX(${x}px)`;
+});
+
+container.addEventListener("mouseenter", () => {
+    line.style.display = "block";
+});
+
+container.addEventListener("mouseleave", () => {
+    line.style.display = "none";
+});
