@@ -9,6 +9,7 @@ function changeBackgroundColor() {
     
     // Apply that color to the body's background
     myBody.style.backgroundColor = randomColor;
+    console.log("The button was clicked!")
 }
 
 // 3. Listen for the click event on the button
