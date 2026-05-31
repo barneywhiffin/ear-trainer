@@ -149,6 +149,7 @@ section {
     /* border: 2px solid white; */
     height: 150px;
     width: 80%;
+    margin: 10px 0;
     max-width: 800px;
     background: #033a21;
     display: grid;
@@ -158,6 +159,7 @@ section {
 .eq-game-box p {
     margin-top: 5px;
     margin-left: 5px;
+    color: white;
 }
 
 #line-container {
@@ -175,10 +177,8 @@ section {
     background: white;
     pointer-events: none; 
     /* prevents the line from blocking mouse events */
-}
-
-.eq-game-box p {
-    color: white;
+    display: none;
+    /* hides line on page load */
 }
 
 .eq-game-box ul {

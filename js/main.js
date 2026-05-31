@@ -48,10 +48,11 @@ let gameFreqs = [];
 if (eqGameButton) {
     eqGameButton.addEventListener('click', function(event) {
         if (round > clicks) {
-            lineContainer.style.border = "2px solid red";
-            setTimeout(() => {
-                lineContainer.style.border = "none";
-            }, 1000);
+            // lineContainer.style.border = "2px solid red";
+            // setTimeout(() => {
+            //     lineContainer.style.border = "none";
+            // }, 1000);
+            alert("are you thick mate or what. how about make a frequency guess first then we'll see about the next round yeah?");
         }
         else {
             round += 1;
@@ -92,10 +93,11 @@ if (lineContainer) {
         // change these to popup windows !!!
 
         if (clicks == round) {
-            eqGameButton.style.background = "red";
-            setTimeout(() => {
-                eqGameButton.style.background = "initial";
-            }, 1000);
+            // eqGameButton.style.background = "red";
+            // setTimeout(() => {
+            //     eqGameButton.style.background = "initial";
+            // }, 1000);
+            alert('are you thick mate or what. how about press go first??');
         }
 
         else {
@@ -104,8 +106,6 @@ if (lineContainer) {
             // eventually allow custom tolerance
             const floor = gameFreqs.at(-1)/2;
             const ceiling = gameFreqs.at(-1)*2;
-            console.log("floor:", floor);
-            console.log("ceiling:", ceiling);
 
             // fetch current width of container (const as new function each click)
             const boxWidth = lineContainer.offsetWidth;
@@ -121,10 +121,8 @@ if (lineContainer) {
             else {
                 resultText.textContent = "Incorrect :("
             }
-
             
         }
-
     });
 }
 
