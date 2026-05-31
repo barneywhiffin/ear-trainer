@@ -31,11 +31,36 @@ function geometricArray(start, end, n) {
 const container = document.getElementById("line-container");
 const line = document.getElementById("line");
 
+const eqGameButton = document.getElementById("eq-game-button");
+
 // need to think of a way of automatically aligning this better with graph axis
 // , at all screen scalings
-const freqs = geometricArray(50, 11000, 100)
+const freqs = geometricArray(35, 13000, 100)
 
-const freqText = document.getElementById("round-freq");
+const roundFreqtext = document.getElementById("round-freq");
+const guessFreqText = document.getElementById("guess-freq");
+
+let round = 0;
+let clicks = 0;
+let gameFreqs = [];
+
+if (eqGameButton) {
+    eqGameButton.addEventListener('click', function(event) {
+        if (round > clicks) {
+            console.log("no way jose")
+        }
+        else {
+            round += 1;
+            console.log("round", round);
+
+            const newFreq = freqs[Math.round(100*Math.random())];
+
+            roundFreqtext.textContent = Math.round(newFreq);
+            gameFreqs.push(newFreq);
+            console.log(gameFreqs);
+        }
+    })
+}
 
 if (container) {
     container.addEventListener("mousemove", (e) => {
@@ -53,16 +78,26 @@ if (container) {
         line.style.display = "none";
     });
 
+    // add start/next round button to generate numbers
+
     container.addEventListener('click', function(event) {
-        // fetch current width of container (const as new function each click)
-        const boxWidth = container.offsetWidth;
-        const mouseLocation = Math.round(100*event.offsetX/boxWidth)
 
-        console.log("Frequency guess:", freqs[mouseLocation]);
+        if (clicks == round) {
+            console.log("no way jose");
+        }
 
-        const newNum = Math.round(100*Math.random());
+        else {
+            clicks += 1;
 
-        freqText.textContent = freqs[newNum];
+            // fetch current width of container (const as new function each click)
+            const boxWidth = container.offsetWidth;
+            const mouseLocation = Math.round(100*event.offsetX/boxWidth);
+
+            // console.log("Frequency guess:", freqs[mouseLocation]);
+            const guessFreq = Math.round(freqs[mouseLocation]);
+            guessFreqText.textContent = guessFreq;
+        }
+
     });
 }
 

@@ -38,12 +38,12 @@
 
 <main class="container">
     <div class="page-title">
-        <h3>Eq Detector</h3>
+        <h3>Eq Detector 🔊👂</h3>
     </div>
     <div class="games-area">
         <div class="eq-game-freq-text">
             <p>Frequency to guess:</p>
-            <p id="round-freq">500</p>
+            <p id="round-freq"></p>
         </div>
         <div class="eq-game-box">
             <p>imagine this is a graph</p>
@@ -51,16 +51,22 @@
                 <div id="line"></div>
             </div>
             <ul>
-                <li>63Hz</li>
-                <li>125Hz</li>
-                <li>250Hz</li>
-                <li>500Hz</li>
-                <li>1kHz</li>
-                <li>2kHz</li>
-                <li>4kHz</li>
-                <li>8kHz</li>
+                <li>63</li>
+                <li>125</li>
+                <li>250</li>
+                <li>500</li>
+                <li>1k</li>
+                <li>2k</li>
+                <li>4k</li>
+                <li>8k</li>
             </ul>
         </div>
+        <div class="eq-game-freq-text">
+            <p>Answer guessed:</p>
+            <p id="guess-freq"></p>
+        </div>
+        <p id="result"></p>
+        <button class="eq-game-button" id="eq-game-button">Go</button>
     </div>
 </main>
 

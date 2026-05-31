@@ -183,10 +183,14 @@ section {
 
 .eq-game-box ul {
     display: flex;
-    justify-content: space-between;
-    margin: 0 10px;
+    justify-content: space-evenly;
+    /* margin: 0 10px; */
     list-style: none;
     color: white;
+}
+
+.eq-game-button {
+    margin-top: 10px;
 }
 
 .green-button {
