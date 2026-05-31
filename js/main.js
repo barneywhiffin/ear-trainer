@@ -47,7 +47,10 @@ let gameFreqs = [];
 if (eqGameButton) {
     eqGameButton.addEventListener('click', function(event) {
         if (round > clicks) {
-            console.log("no way jose")
+            container.style.border = "2px solid red";
+            setTimeout(() => {
+                container.style.border = "none";
+            }, 1000);
         }
         else {
             round += 1;
@@ -82,8 +85,14 @@ if (container) {
 
     container.addEventListener('click', function(event) {
 
+        // change these to popup windows !!!
+
         if (clicks == round) {
             console.log("no way jose");
+            eqGameButton.style.background = "red";
+            setTimeout(() => {
+                eqGameButton.style.background = "initial";
+            }, 1000);
         }
 
         else {
