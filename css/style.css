@@ -105,6 +105,10 @@ main {
     grid-template-rows: auto 1fr;
 }
 
+.gain-select {
+    margin-top: 20px;
+}
+
 .color-btn {
     margin-top: 30px;
 }

@@ -41,6 +41,12 @@ const roundFreqtext = document.getElementById("round-freq");
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
 
+const gainSelection = document.getElementById("gain-select");
+
+if (gainSelection) {
+    
+}
+
 let round = 0;
 let clicks = 0;
 let gameFreqs = [];
