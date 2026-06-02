@@ -98,7 +98,7 @@ h3 a:hover {
     display: block;
 }
 
-main {
+.main-in-two {
     /* padding: 60px 0; */
     /* background: rgb(217, 238, 244); */
     display: grid;

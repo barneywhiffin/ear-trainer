@@ -23,6 +23,18 @@ const roundFreqtext = document.getElementById("round-freq");
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
 
+const usernameTextbox = document.getElementById("username-textbox")
+const usernameButton = document.getElementById("username-button")
+const usernameDisplay = document.getElementById("username-display")
+
+// eventually upgrade into a user class
+usernameButton.addEventListener("click", function(event) {
+    const username = usernameTextbox.value;
+    console.log(username);
+    usernameTextbox.value = "";
+})
+
+
 // background colour button function
 function changeBackgroundColor() {
     // Generate a random hex color (e.g., #3498db)
