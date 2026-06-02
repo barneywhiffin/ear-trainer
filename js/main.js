@@ -1,22 +1,3 @@
-// 1. Select the HTML elements we want to work with
-const myButton = document.getElementById('color-btn');
-const myBody = document.body;
-
-// 2. Define what should happen when the button is clicked
-function changeBackgroundColor() {
-    // Generate a random hex color (e.g., #3498db)
-    const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
-    
-    // Apply that color to the body's background
-    myBody.style.backgroundColor = randomColor;
-    // console.log("The button was clicked!")
-}
-
-// 3. ONLY listen for the click event if the button actually exists on this page!
-if (myButton) {
-    myButton.addEventListener('click', changeBackgroundColor);
-}
-
 function geometricArray(start, end, n) {
     const ratio = Math.pow(end / start, 1 / (n - 1));
     const arr = [];
@@ -28,9 +9,10 @@ function geometricArray(start, end, n) {
     return arr;
 }
 
+const myButton = document.getElementById('color-btn');
+const myBody = document.body;
 const lineContainer = document.getElementById("line-container");
 const line = document.getElementById("line");
-
 const eqGameButton = document.getElementById("eq-game-button");
 
 // need to think of a way of automatically aligning this better with graph axis
@@ -41,11 +23,26 @@ const roundFreqtext = document.getElementById("round-freq");
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
 
-const gainSelection = document.getElementById("gain-select");
-
-if (gainSelection) {
+// background colour button function
+function changeBackgroundColor() {
+    // Generate a random hex color (e.g., #3498db)
+    const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
     
+    // Apply that color to the body's background
+    myBody.style.backgroundColor = randomColor;
+    // console.log("The button was clicked!")
 }
+
+
+if (myButton) {
+    myButton.addEventListener('click', changeBackgroundColor);
+}
+
+// const gainSelection = document.getElementById("gain-select");
+
+// if (gainSelection) {
+
+// }
 
 let round = 0;
 let clicks = 0;
@@ -131,7 +128,3 @@ if (lineContainer) {
         }
     });
 }
-
-// we need to fetch pixel width of container each time mouse clicked to account for screen changes
-// we need to have each click make visible a next round button?
-// or if auto next round (tickbox?) then change the rng displayed target freq
