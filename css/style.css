@@ -140,6 +140,15 @@ section {
 .page-title {
     padding-top: 40px;
     margin: 0 auto;
+    h2 {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.buttons-row {
+    display: flex;
+    gap: 20px;
 }
 
 .games-area {
@@ -156,14 +165,13 @@ section {
 }
 
 .eq-game-box {
-    /* border: 2px solid white; */
     height: 150px;
     width: 80%;
     margin: 10px 0;
     max-width: 800px;
     background: #033a21;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 1fr auto;
 }
 
 .eq-game-box p {

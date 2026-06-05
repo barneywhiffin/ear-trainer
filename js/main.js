@@ -17,7 +17,7 @@ const eqGameButton = document.getElementById("eq-game-button");
 
 // need to think of a way of automatically aligning this better with graph axis
 // , at all screen scalings
-const freqs = geometricArray(35, 13000, 100);
+const freqs = geometricArray(33, 13500, 100);
 
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
@@ -141,9 +141,7 @@ if (lineContainer) {
     // add start/next round button to generate numbers
 
     lineContainer.addEventListener('click', function(event) {
-
-        // change these to popup windows !!!
-
+      
         if (clicks == round) {
             // eqGameButton.style.background = "red";
             // setTimeout(() => {
@@ -165,6 +163,7 @@ if (lineContainer) {
 
             // console.log("Frequency guess:", freqs[mouseLocation]);
             const guessFreq = Math.round(freqs[mouseLocation]);
+            // console.log(guessFreq);
             guessFreqText.textContent = guessFreq;
 
             if (guessFreq > floor && guessFreq < ceiling) {
