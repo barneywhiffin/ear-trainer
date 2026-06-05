@@ -33,18 +33,18 @@ const usernameDisplay = document.getElementById("username-display");
 // most ideally, have the confirm button greyed out and unclickable until something in textbox!!
 usernameButton.addEventListener("click", function(event) {
     const username = usernameTextbox.value;
-    localStorage.setItem('username', JSON.stringify(username));
+    localStorage.setItem('username', username);
     // console.log(username);
     usernameTextbox.value = "";
 })
 
 usernameDisplayButton.addEventListener("click", function(event) {
     const savedUsername = localStorage.getItem('username');
-    if (!savedUsername || savedUsername === '""') {
-        usernameDisplay.textContent = "No username entered yet";
+    if (savedUsername) {
+        usernameDisplay.textContent = savedUsername;
     }
     else {
-        usernameDisplay.textContent = savedUsername;
+        usernameDisplay.textContent = "No username entered yet";
     }
 })
 
