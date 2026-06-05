@@ -23,10 +23,18 @@ const roundFreqtext = document.getElementById("round-freq");
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
 
+const eqGameHowto = document.getElementById("eq-game-howto");
+const openEqHowto = document.getElementById("open-eq-howto");
+const closeEqHowto = document.getElementById("close-eq-howto");
+
 const usernameTextbox = document.getElementById("username-textbox");
 const usernameButton = document.getElementById("username-button");
 const usernameDisplayButton = document.getElementById("username-display-button");
 const usernameDisplay = document.getElementById("username-display");
+
+// eq game how to play popup window
+openEqHowto.addEventListener("click", () => eqGameHowto.showModal());
+closeEqHowto.addEventListener("click", () => eqGameHowto.close());
 
 // eventually upgrade into a user class
 
@@ -81,6 +89,8 @@ if (eqGameButton) {
             //     lineContainer.style.border = "none";
             // }, 1000);
             alert("are you thick mate or what. how about make a frequency guess first then we'll see about the next round yeah?");
+
+            // TODO: replace alerts with custom css popups as this won't work with androidddd
         }
         else {
             round += 1;

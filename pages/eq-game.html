@@ -48,6 +48,7 @@
                 <div>
                     <p><mark>Note to self: each game should get it's own how to play popup window!</mark></p>
                     <p><mark>and navbar should be games, leaderboard, login</mark></p>
+                    <button class="green-button" id="open-eq-howto">How to play</button>
                     <p>Frequency to guess:</p>
                 </div>
 
@@ -93,6 +94,14 @@
         <a href="https://github.com/barneywhiffin" class ="button">My github</a>
     </div>
 </footer> 
+
+<dialog id="eq-game-howto">
+  <h2>How to Play</h2>
+  <p>This is a game for identifying which frequencies are being boosted or cut.</p>
+  <p>Listen to the sound and select along the frequency axis the centre of the eq move.</p>
+  
+  <button id="close-eq-howto">Close</button>
+</dialog>
 
 </body>
 <script src="../js/main.js"></script>

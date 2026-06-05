@@ -217,6 +217,23 @@ section {
   margin-top: 10px;
 }
 
+dialog {
+  /* to override the * margin 0 we gave to everything */
+  margin: auto;
+  padding: 24px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  font-family: sans-serif;
+  max-width: 400px;
+  width: 100%;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px); /* Optional: blurs the background */
+}
+
 .instruct {
     margin-top: 30px;
 }
