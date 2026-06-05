@@ -234,6 +234,12 @@ dialog::backdrop {
   backdrop-filter: blur(3px); /* Optional: blurs the background */
 }
 
+#close-eq-howto {
+  background-color: #dc3545;
+  color: white;
+  margin-top: 15px;
+}
+
 .instruct {
     margin-top: 30px;
 }
