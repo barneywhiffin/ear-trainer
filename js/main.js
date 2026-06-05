@@ -26,18 +26,25 @@ const resultText = document.getElementById("result");
 const eqGameHowto = document.getElementById("eq-game-howto");
 const openEqHowto = document.getElementById("open-eq-howto");
 const closeEqHowto = document.getElementById("close-eq-howto");
+const eqGameSettings = document.getElementById("eq-game-settings");
+const openEqSettings = document.getElementById("open-eq-settings");
+const closeEqSettings = document.getElementById("close-eq-settings");
 
 const usernameTextbox = document.getElementById("username-textbox");
 const usernameButton = document.getElementById("username-button");
 const usernameDisplayButton = document.getElementById("username-display-button");
 const usernameDisplay = document.getElementById("username-display");
 
-// eq game how to play popup window
+// eq game popup windows
 if (openEqHowto) {
     openEqHowto.addEventListener("click", () => eqGameHowto.showModal());
     closeEqHowto.addEventListener("click", () => eqGameHowto.close());
 }
 
+if (openEqSettings) {
+    openEqSettings.addEventListener("click", () => eqGameSettings.showModal());
+    closeEqSettings.addEventListener("click", () => eqGameSettings.close());
+}
 
 // eventually upgrade into a user class
 

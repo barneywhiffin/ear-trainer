@@ -41,14 +41,16 @@
 <main class="container">
     <div class="main-in-two">
         <div class="page-title">
-            <h3>Eq Detector 🔊👂</h3>
+            <h2 style="margin-left: 30px;">Eq Detector 🔊👂</h2>
+            <button class="green-button" id="open-eq-howto">How to play</button>
+            <button class="green-button" id="open-eq-settings">Settings</button>
         </div>
         <div class="games-area">
             <div class="eq-game-freq-text">
                 <div>
                     <p><mark>Note to self: each game should get it's own how to play popup window!</mark></p>
                     <p><mark>and navbar should be games, leaderboard, login</mark></p>
-                    <button class="green-button" id="open-eq-howto">How to play</button>
+                    
                     <p>Frequency to guess:</p>
                 </div>
 
@@ -101,6 +103,14 @@
   <p>Listen to the sound and select along the frequency axis the centre of the eq move.</p>
   
   <button id="close-eq-howto">Close</button>
+</dialog>
+
+<dialog id="eq-game-settings">
+  <h2>Settings</h2>
+  <p>A toggle here</p>
+  <p>A checkbox here</p>
+  
+  <button id="close-eq-settings">Close</button>
 </dialog>
 
 </body>
