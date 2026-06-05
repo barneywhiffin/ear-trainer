@@ -19,7 +19,6 @@ const eqGameButton = document.getElementById("eq-game-button");
 // , at all screen scalings
 const freqs = geometricArray(35, 13000, 100);
 
-const roundFreqtext = document.getElementById("round-freq");
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
 
@@ -114,7 +113,6 @@ if (eqGameButton) {
 
             const newFreq = freqs[Math.round(100*Math.random())];
 
-            roundFreqtext.textContent = Math.round(newFreq);
             gameFreqs.push(newFreq);
 
             guessFreqText.textContent = "";
