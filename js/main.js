@@ -17,23 +17,36 @@ const eqGameButton = document.getElementById("eq-game-button");
 
 // need to think of a way of automatically aligning this better with graph axis
 // , at all screen scalings
-const freqs = geometricArray(35, 13000, 100)
+const freqs = geometricArray(35, 13000, 100);
 
 const roundFreqtext = document.getElementById("round-freq");
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
 
-const usernameTextbox = document.getElementById("username-textbox")
-const usernameButton = document.getElementById("username-button")
-const usernameDisplay = document.getElementById("username-display")
+const usernameTextbox = document.getElementById("username-textbox");
+const usernameButton = document.getElementById("username-button");
+const usernameDisplayButton = document.getElementById("username-display-button");
+const usernameDisplay = document.getElementById("username-display");
 
 // eventually upgrade into a user class
+
+// most ideally, have the confirm button greyed out and unclickable until something in textbox!!
 usernameButton.addEventListener("click", function(event) {
     const username = usernameTextbox.value;
-    console.log(username);
+    localStorage.setItem('username', JSON.stringify(username));
+    // console.log(username);
     usernameTextbox.value = "";
 })
 
+usernameDisplayButton.addEventListener("click", function(event) {
+    const savedUsername = localStorage.getItem('username');
+    if (!savedUsername || savedUsername === '""') {
+        usernameDisplay.textContent = "No username entered yet";
+    }
+    else {
+        usernameDisplay.textContent = savedUsername;
+    }
+})
 
 // background colour button function
 function changeBackgroundColor() {
