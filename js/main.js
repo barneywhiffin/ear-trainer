@@ -17,7 +17,7 @@ const eqGameButton = document.getElementById("eq-game-button");
 
 // need to think of a way of automatically aligning this better with graph axis
 // , at all screen scalings
-const freqs = geometricArray(33, 13500, 100);
+const freqs = geometricArray(45, 11000, 100);
 
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
@@ -142,15 +142,15 @@ if (lineContainer) {
 
     lineContainer.addEventListener('click', function(event) {
       
-        if (clicks == round) {
-            // eqGameButton.style.background = "red";
-            // setTimeout(() => {
-            //     eqGameButton.style.background = "initial";
-            // }, 1000);
-            alert('are you thick mate or what. how about press go first??');
-        }
+        // if (clicks == round) {
+        //     // eqGameButton.style.background = "red";
+        //     // setTimeout(() => {
+        //     //     eqGameButton.style.background = "initial";
+        //     // }, 1000);
+        //     alert('are you thick mate or what. how about press go first??');
+        // }
 
-        else {
+        // else {
             clicks += 1;
 
             // eventually allow custom tolerance
@@ -161,9 +161,8 @@ if (lineContainer) {
             const boxWidth = lineContainer.offsetWidth;
             const mouseLocation = Math.round(100*event.offsetX/boxWidth);
 
-            // console.log("Frequency guess:", freqs[mouseLocation]);
             const guessFreq = Math.round(freqs[mouseLocation]);
-            // console.log(guessFreq);
+            console.log(guessFreq);
             guessFreqText.textContent = guessFreq;
 
             if (guessFreq > floor && guessFreq < ceiling) {
@@ -173,6 +172,6 @@ if (lineContainer) {
                 resultText.textContent = "Incorrect :("
             }
             
-        }
+        // }
     });
 }
