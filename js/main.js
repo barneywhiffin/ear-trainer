@@ -33,28 +33,37 @@ const usernameDisplayButton = document.getElementById("username-display-button")
 const usernameDisplay = document.getElementById("username-display");
 
 // eq game how to play popup window
-openEqHowto.addEventListener("click", () => eqGameHowto.showModal());
-closeEqHowto.addEventListener("click", () => eqGameHowto.close());
+if (openEqHowto) {
+    openEqHowto.addEventListener("click", () => eqGameHowto.showModal());
+    closeEqHowto.addEventListener("click", () => eqGameHowto.close());
+}
+
 
 // eventually upgrade into a user class
 
 // most ideally, have the confirm button greyed out and unclickable until something in textbox!!
-usernameButton.addEventListener("click", function(event) {
-    const username = usernameTextbox.value;
-    localStorage.setItem('username', username);
-    // console.log(username);
-    usernameTextbox.value = "";
-})
+if (usernameButton) {
+    usernameButton.addEventListener("click", function(event) {
+        const username = usernameTextbox.value;
+        localStorage.setItem('username', username);
+        // console.log(username);
+        usernameTextbox.value = "";
+    })
+}
 
-usernameDisplayButton.addEventListener("click", function(event) {
-    const savedUsername = localStorage.getItem('username');
-    if (savedUsername) {
-        usernameDisplay.textContent = savedUsername;
-    }
-    else {
-        usernameDisplay.textContent = "No username entered yet";
-    }
-})
+
+if (usernameDisplayButton) {
+    usernameDisplayButton.addEventListener("click", function(event) {
+        const savedUsername = localStorage.getItem('username');
+        if (savedUsername) {
+            usernameDisplay.textContent = savedUsername;
+        }
+        else {
+            usernameDisplay.textContent = "No username entered yet";
+        }
+    })
+}
+
 
 // background colour button function
 function changeBackgroundColor() {
