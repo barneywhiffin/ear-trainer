@@ -170,7 +170,7 @@ section {
 }
 
 .eq-game-freq-text {
-    min-height: 40px;
+    min-height: 50px;
 }
 
 .eq-game-box {
@@ -216,7 +216,7 @@ section {
 }
 
 #eq-game-button {
-    margin-top: 10px;
+    padding: 10px 30px;
 }
 
 .green-button {

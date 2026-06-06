@@ -34,6 +34,7 @@ const freqs = geometricArray(45, 11000, 100);
 
 const guessFreqText = document.getElementById("guess-freq");
 const resultText = document.getElementById("result");
+const scoreText = document.getElementById("score-text");
 
 const eqGameHowto = document.getElementById("eq-game-howto");
 const openEqHowto = document.getElementById("open-eq-howto");
@@ -105,6 +106,7 @@ if (myButton) {
 // }
 
 let round = 0;
+let score = 0;
 let clicks = 0;
 let gameFreqs = [];
 
@@ -216,9 +218,12 @@ if (lineContainer) {
 
             if (guessFreq > floor && guessFreq < ceiling) {
                 resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
+                score += 1;
+                scoreText.textContent = `Score: ${score}`;
             }
             else {
                 resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz`;
+                scoreText.textContent = `Score: 0`;
             }
             
         }
