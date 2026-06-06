@@ -74,6 +74,9 @@ if (usernameButton) {
         localStorage.setItem('username', username);
         // console.log(username);
         usernameTextbox.value = "";
+        if (usernameDisplay) {
+            usernameDisplay.textContent = `Username: ${username}`;
+        }
     })
 }
 
