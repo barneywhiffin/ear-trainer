@@ -208,15 +208,15 @@ if (lineContainer) {
 
     lineContainer.addEventListener('click', function(event) {
       
-        // if (clicks == round) {
-        //     // eqGameButton.style.background = "red";
-        //     // setTimeout(() => {
-        //     //     eqGameButton.style.background = "initial";
-        //     // }, 1000);
-        //     alert('are you thick mate or what. how about press go first??');
-        // }
+        if (clicks == round) {
+            // eqGameButton.style.background = "red";
+            // setTimeout(() => {
+            //     eqGameButton.style.background = "initial";
+            // }, 1000);
+            alert('are you thick mate or what. how about press go first??');
+        }
 
-        // else {
+        else {
             clicks += 1;
 
             // eventually allow custom tolerance
@@ -230,15 +230,15 @@ if (lineContainer) {
             const guessFreq = Math.round(freqs[mouseLocation]);
             console.log(guessFreq);
             guessFreqText.textContent = guessFreq;
+            const displayAnswer = Math.round(gameFreqs.at(-1));
 
             if (guessFreq > floor && guessFreq < ceiling) {
-                resultText.textContent = "Correct!"
+                resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
             }
             else {
-                const displayAnswer = Math.round(gameFreqs.at(-1));
                 resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz`;
             }
             
-        // }
+        }
     });
 }
