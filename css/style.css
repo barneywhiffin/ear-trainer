@@ -98,6 +98,10 @@ h3 a:hover {
     display: block;
 }
 
+main {
+    padding-top: 20px;
+}
+
 .main-in-two {
     /* padding: 60px 0; */
     /* background: rgb(217, 238, 244); */
@@ -138,7 +142,7 @@ section {
 }
 
 .page-title {
-    padding-top: 40px;
+    padding-top: 20px;
     margin: 0 auto;
     h2 {
         display: flex;
@@ -159,9 +163,14 @@ section {
     margin-top: 40px;
 }
 
-.eq-game-freq-text {
+.game-area-info {
     display: flex;
-    gap: 5px;
+    width: 80%;
+    justify-content: space-between;
+}
+
+.eq-game-freq-text {
+    min-height: 40px;
 }
 
 .eq-game-box {
@@ -206,7 +215,7 @@ section {
     /* hides line on page load */
 }
 
-.eq-game-button {
+#eq-game-button {
     margin-top: 10px;
 }
 

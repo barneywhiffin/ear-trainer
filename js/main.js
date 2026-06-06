@@ -10,28 +10,15 @@ function geometricArray(start, end, n) {
 }
 
 const audioCtx = new AudioContext();
-// flag to prevent multiple loads
-let workletLoaded = false;
+
+// TODO: only bother running on specific audio related pages
+window.addEventListener('load', async () => {
+    await audioCtx.audioWorklet.addModule('../js/pink-noise.js');
+});
 
 async function ensureAudioReady() {
     if (audioCtx.state === 'suspended') {
         await audioCtx.resume();
-    }
-    
-    if (!workletLoaded) {
-        try {
-            // Force the thread to completely finish adding the module
-            await audioCtx.audioWorklet.addModule('../js/pink-noise.js');
-            workletLoaded = true;
-            // console.log('Worklet successfully loaded');
-            
-            // Give the browser a tiny moment to register the name in the scope
-            await new Promise(resolve => setTimeout(resolve, 50)); 
-        } catch (error) {
-            if (error.name !== 'AbortError') {
-                console.error('Failed to load audio worklet:', error);
-            }
-        }
     }
 }
 
@@ -123,33 +110,28 @@ let gameFreqs = [];
 
 if (eqGameButton) {
     eqGameButton.addEventListener('click', async() => {
-        // if (round > clicks) {
-        //     // lineContainer.style.border = "2px solid red";
-        //     // setTimeout(() => {
-        //     //     lineContainer.style.border = "none";
-        //     // }, 1000);
-        //     alert("are you thick mate or what. how about make a frequency guess first then we'll see about the next round yeah?");
+        if (round > clicks) {
+            // lineContainer.style.border = "2px solid red";
+            // setTimeout(() => {
+            //     lineContainer.style.border = "none";
+            // }, 1000);
+            alert("are you thick mate or what. how about make a frequency guess first then we'll see about the next round yeah?");
 
-        //     // TODO: replace alerts with custom css popups as this won't work with androidddd
-        // }
-        // else {
+            // TODO: replace alerts with custom css popups as this won't work with androidddd
+        }
+        else {
             // set / reset things
-            round += 1;
-            // console.log("round", round);
-
-            const newFreq = freqs[Math.floor(Math.random() * freqs.length)];
-            // this may need changing to Math.floor(Math.random() * freqs.length)
-
-            gameFreqs.push(newFreq);
 
             guessFreqText.textContent = "";
             resultText.textContent = "";
 
-            // actually make the sound happen
+            round += 1;
 
-            // if (audioCtx.state === 'suspended') {
-            //     await audioCtx.resume();
-            // }
+            const newFreq = freqs[Math.floor(Math.random() * freqs.length)];
+
+            gameFreqs.push(newFreq);
+
+            // actually make the sound happen
 
             await ensureAudioReady();
 
@@ -184,8 +166,8 @@ if (eqGameButton) {
                 eqBand.disconnect();
                 pinkNoise.disconnect();
             }, (duration + 0.05) * 1000);
-        // }
-    })
+        }
+    });
 }
 
 if (lineContainer) {
@@ -229,7 +211,7 @@ if (lineContainer) {
 
             const guessFreq = Math.round(freqs[mouseLocation]);
             console.log(guessFreq);
-            guessFreqText.textContent = guessFreq;
+            guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
             const displayAnswer = Math.round(gameFreqs.at(-1));
 
             if (guessFreq > floor && guessFreq < ceiling) {
