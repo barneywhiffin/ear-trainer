@@ -11,17 +11,6 @@ function geometricArray(start, end, n) {
 
 const audioCtx = new AudioContext();
 
-// TODO: only bother running on specific audio related pages
-window.addEventListener('load', async () => {
-    await audioCtx.audioWorklet.addModule('../js/pink-noise.js');
-});
-
-async function ensureAudioReady() {
-    if (audioCtx.state === 'suspended') {
-        await audioCtx.resume();
-    }
-}
-
 const myButton = document.getElementById('color-btn');
 const myBody = document.body;
 const lineContainer = document.getElementById("line-container");
@@ -45,8 +34,25 @@ const closeEqSettings = document.getElementById("close-eq-settings");
 
 const usernameTextbox = document.getElementById("username-textbox");
 const usernameButton = document.getElementById("username-button");
-const usernameDisplayButton = document.getElementById("username-display-button");
 const usernameDisplay = document.getElementById("username-display");
+
+// TODO: only bother running on specific audio related pages
+window.addEventListener('load', async () => {
+    if (usernameDisplay) {
+        const savedUsername = localStorage.getItem('username');
+        if (savedUsername) {
+            usernameDisplay.textContent = `Username: ${savedUsername}`;
+        }
+        
+    }
+    await audioCtx.audioWorklet.addModule('../js/pink-noise.js');
+});
+
+async function ensureAudioReady() {
+    if (audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+    }
+}
 
 // eq game popup windows
 if (openEqHowto) {
@@ -68,19 +74,6 @@ if (usernameButton) {
         localStorage.setItem('username', username);
         // console.log(username);
         usernameTextbox.value = "";
-    })
-}
-
-
-if (usernameDisplayButton) {
-    usernameDisplayButton.addEventListener("click", function(event) {
-        const savedUsername = localStorage.getItem('username');
-        if (savedUsername) {
-            usernameDisplay.textContent = savedUsername;
-        }
-        else {
-            usernameDisplay.textContent = "No username entered yet";
-        }
     })
 }
 
