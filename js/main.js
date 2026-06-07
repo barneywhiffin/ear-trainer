@@ -39,7 +39,8 @@ const usernameDisplay = document.getElementById("username-display");
 // TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
     if (usernameDisplay) {
-        const savedUsername = localStorage.getItem('username');
+        const savedUsers = JSON.parse(localStorage.getItem('users'));
+        savedUsername = savedUsers.at(-1).username;
         if (savedUsername) {
             usernameDisplay.textContent = `Username: ${savedUsername}`;
         }
@@ -83,9 +84,9 @@ if (addUsernameButton) {
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
         usernameTextbox.value = "";
-        // if (usernameDisplay) {
-        //     usernameDisplay.textContent = `Username: ${users.at(-1).username}`;
-        // }
+        if (usernameDisplay) {
+            usernameDisplay.textContent = `Username: ${user.username}`;
+        }
     })
 }
 
