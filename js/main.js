@@ -33,7 +33,7 @@ const openEqSettings = document.getElementById("open-eq-settings");
 const closeEqSettings = document.getElementById("close-eq-settings");
 
 const usernameTextbox = document.getElementById("username-textbox");
-const usernameButton = document.getElementById("username-button");
+const addUsernameButton = document.getElementById("add-username-button");
 const usernameDisplay = document.getElementById("username-display");
 
 // TODO: only bother running on specific audio related pages
@@ -65,21 +65,29 @@ if (openEqSettings) {
     closeEqSettings.addEventListener("click", () => eqGameSettings.close());
 }
 
-// eventually upgrade into a user class
+// TODO: eventually upgrade into a user class with scores
 
 // most ideally, have the confirm button greyed out and unclickable until something in textbox!!
-if (usernameButton) {
-    usernameButton.addEventListener("click", function(event) {
-        const username = usernameTextbox.value;
-        localStorage.setItem('username', username);
-        // console.log(username);
-        usernameTextbox.value = "";
-        if (usernameDisplay) {
-            usernameDisplay.textContent = `Username: ${username}`;
+if (addUsernameButton) {
+    addUsernameButton.addEventListener("click", function(event) {
+        if (!localStorage.getItem('users')) {
+            let users = [];
+            localStorage.setItem('users', JSON.stringify(users));
         }
+        const username = usernameTextbox.value;
+        const user = {
+            username: username,
+            highscore: 0,
+        }
+        let users = JSON.parse(localStorage.getItem('users'));
+        users.push(user);
+        localStorage.setItem('users', JSON.stringify(users));
+        usernameTextbox.value = "";
+        // if (usernameDisplay) {
+        //     usernameDisplay.textContent = `Username: ${users.at(-1).username}`;
+        // }
     })
 }
-
 
 // background colour button function
 function changeBackgroundColor() {
