@@ -40,11 +40,13 @@ const usernameDisplay = document.getElementById("username-display");
 window.addEventListener('load', async () => {
     if (usernameDisplay) {
         const savedUsers = JSON.parse(localStorage.getItem('users'));
-        savedUsername = savedUsers.at(-1).username;
-        if (savedUsername) {
-            usernameDisplay.textContent = `Username: ${savedUsername}`;
-        }
-        
+        for (i in savedUsers) {
+            if (savedUsers[i].active === true) {
+                const savedUsername = savedUsers[i].username;
+                usernameDisplay.textContent = `Username: ${savedUsername}`;
+                break;
+            }
+        }        
     }
     await audioCtx.audioWorklet.addModule('../js/pink-noise.js');
 });
@@ -76,16 +78,30 @@ if (addUsernameButton) {
             localStorage.setItem('users', JSON.stringify(users));
         }
         const username = usernameTextbox.value;
-        const user = {
-            username: username,
-            highscore: 0,
-        }
+
         let users = JSON.parse(localStorage.getItem('users'));
-        users.push(user);
+
+        // probably jank af workaround but it is doing the job
+        let userExistsFlag = false;
+        for (i in users) {
+            users[i].active = false;
+            if (username === users[i].username) {
+                users[i].active = true;
+                userExistsFlag = true;
+            }
+        }
+        if (!userExistsFlag) {
+            let user = {
+                username: username,
+                active: true,
+                highscore: 0,
+            }
+            users.push(user);
+        }
         localStorage.setItem('users', JSON.stringify(users));
         usernameTextbox.value = "";
         if (usernameDisplay) {
-            usernameDisplay.textContent = `Username: ${user.username}`;
+            usernameDisplay.textContent = `Username: ${username}`;
         }
     })
 }
