@@ -16,14 +16,22 @@ function topNIndices(arr, n) {
     .slice(0, n);
 }
 
-function getActiveUser() {
-    const savedUsers = JSON.parse(localStorage.getItem('users'));
-    for (i in savedUsers) {
+function getUserInfo() {
+    const savedUsers = JSON.parse(localStorage.getItem('users'))
+    let activeUser = false;
+    let index = 0;
+    for (let i in savedUsers) {
         if (savedUsers[i].active === true) {
-            const activeUser = savedUsers[i];
-            return activeUser;
+            activeUser = true;
+            index = i
         }
-    }    
+    } 
+    if (activeUser) {
+        return [savedUsers, index];
+    }
+    else {
+        return [null, null];
+    }
 }
 
 const audioCtx = new AudioContext();
@@ -59,21 +67,24 @@ const scoresDisplay3 = document.getElementById("scores-display3");
 // TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
     if (usernameDisplay) {
-        const activeUser =  getActiveUser()
-        const savedUsername = activeUser.username;
-        usernameDisplay.textContent = `Username: ${savedUsername}`;      
+        const [savedUsers, index] =  getUserInfo()
+        if (index) {
+            const savedUsername = savedUsers[index].username;
+            usernameDisplay.textContent = `Username: ${savedUsername}`; 
+        }
     }
     if (scoresDisplay1) {
-        const savedUsers = JSON.parse(localStorage.getItem('users'));
+        let [savedUsers, index] =  getUserInfo()
         let scoresDisplayText = "";
         let savedUsernames = [];
         let savedScores = [];
         for (i in savedUsers) {
-            const savedUsername = savedUsers[i].username;
-            const savedScore = savedUsers[i].highscore;
+            const savedUsername = savedUsers[index].username;
+            const savedScore = savedUsers[index].highscore;
             savedUsernames.push(savedUsername);
             savedScores.push(savedScore);
         }
+
         // console.log(savedUsernames);
         // console.log(savedScores);
 
@@ -110,32 +121,38 @@ if (openEqSettings) {
 // most ideally, have the confirm button greyed out and unclickable until something in textbox!!
 if (addUsernameButton) {
     addUsernameButton.addEventListener("click", function(event) {
-        if (!localStorage.getItem('users')) {
-            let users = [];
-            localStorage.setItem('users', JSON.stringify(users));
-        }
         const username = usernameTextbox.value;
+        let [savedUsers, index] =  getUserInfo()
 
-        let users = JSON.parse(localStorage.getItem('users'));
-
-        // probably jank af workaround but it is doing the job
-        let userExistsFlag = false;
-        for (i in users) {
-            users[i].active = false;
-            if (username === users[i].username) {
-                users[i].active = true;
-                userExistsFlag = true;
-            }
-        }
-        if (!userExistsFlag) {
-            let user = {
+        if (!index) {
+            let users = [];
+            let newUser = {
                 username: username,
                 active: true,
                 scores: [],
             }
-            users.push(user);
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
         }
-        localStorage.setItem('users', JSON.stringify(users));
+
+        // probably jank af workaround but it is doing the job
+        let userExistsFlag = false;
+        for (i in savedUsers) {
+            savedUsers[i].active = false;
+            if (username === savedUsers[i].username) {
+                savedUsers[i].active = true;
+                userExistsFlag = true;
+            }
+        }
+        if (!userExistsFlag) {
+            let newUser = {
+                username: username,
+                active: true,
+                scores: [],
+            }
+            savedUsers.push(newUser);
+        }
+        localStorage.setItem('users', JSON.stringify(savedUsers));
         usernameTextbox.value = "";
         if (usernameDisplay) {
             usernameDisplay.textContent = `Username: ${username}`;
@@ -270,7 +287,6 @@ if (lineContainer) {
             const mouseLocation = Math.round(100*event.offsetX/boxWidth);
 
             const guessFreq = Math.round(freqs[mouseLocation]);
-            console.log(guessFreq);
             guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
             const displayAnswer = Math.round(gameFreqs.at(-1));
 
@@ -281,8 +297,11 @@ if (lineContainer) {
             }
             else {
                 resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz`;
-
-                scoreText.textContent = "Score: 0";
+                let [savedUsers, index] = getUserInfo();
+                // console.log(savedUsers);
+                savedUsers[index].scores.push(score);
+                localStorage.setItem('users', JSON.stringify(savedUsers));
+                scoreText.textContent = `Score: 0`;
             }
             
         }
