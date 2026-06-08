@@ -275,6 +275,7 @@ footer a {
 .leaderboard-table {
     margin-top: 20px;
     padding: 20px 20px;
+    padding-right: 0;
     width: 70%;
     border: 2px solid white;
     display: grid;
@@ -286,5 +287,11 @@ footer a {
   body {
     background: #121212;
     color: white;
+  }
+  header {
+    background: darkblue;
+  }
+  footer {
+    background: darkblue;
   }
 }
