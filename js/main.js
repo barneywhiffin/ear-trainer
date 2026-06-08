@@ -9,6 +9,13 @@ function geometricArray(start, end, n) {
     return arr;
 }
 
+// TODO: APPARENTLY FOR IN IS SHIT FOR ARRAYS, USE FOR OF
+// look it up and stuff
+// for (const x of arr) {
+//     console.log(x);
+// }
+// this ^^ will print each value in array !!!
+
 function getUserInfo() {
     const savedUsers = JSON.parse(localStorage.getItem('users'))
     let activeUser = false;
@@ -63,9 +70,12 @@ const closeEqSettings = document.getElementById("close-eq-settings");
 const usernameTextbox = document.getElementById("username-textbox");
 const addUsernameButton = document.getElementById("add-username-button");
 const usernameDisplay = document.getElementById("username-display");
-const scoresDisplay1 = document.getElementById("scores-display1");
-const scoresDisplay2 = document.getElementById("scores-display2");
-const scoresDisplay3 = document.getElementById("scores-display3");
+const scoresDisplayLeft1 = document.getElementById("scores-display-left1");
+const scoresDisplayRight1 = document.getElementById("scores-display-right1");
+const scoresDisplayLeft2 = document.getElementById("scores-display-left2");
+const scoresDisplayRight2 = document.getElementById("scores-display-right2");
+const scoresDisplayLeft3 = document.getElementById("scores-display-left3");
+const scoresDisplayRight3 = document.getElementById("scores-display-right3");
 
 // TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
@@ -76,7 +86,7 @@ window.addEventListener('load', async () => {
             usernameDisplay.textContent = `Username: ${savedUsername}`; 
         }
     }
-    if (scoresDisplay1) {
+    if (scoresDisplayLeft1) {
         let [savedUsers, index] = getUserInfo();
         let allUsers = [];
         let allScores = [];
@@ -89,17 +99,20 @@ window.addEventListener('load', async () => {
         topScoreIndex = maxIndex(allScores);
 
         // .splice lets us remove the value at a certain index
-        scoresDisplay1.textContent = allUsers[topScoreIndex] + allScores[topScoreIndex]; 
+        scoresDisplayLeft1.textContent = allUsers[topScoreIndex]; 
+        scoresDisplayRight1.textContent = allScores[topScoreIndex]; 
         allUsers.splice(topScoreIndex, 1);  
         allScores.splice(topScoreIndex, 1); 
         
         topScoreIndex = maxIndex(allScores);
-        scoresDisplay2.textContent = allUsers[topScoreIndex] + allScores[topScoreIndex]; 
+        scoresDisplayLeft2.textContent = allUsers[topScoreIndex]; 
+        scoresDisplayRight2.textContent = allScores[topScoreIndex]; 
         allUsers.splice(topScoreIndex, 1);  
         allScores.splice(topScoreIndex, 1);
 
         topScoreIndex = maxIndex(allScores);
-        scoresDisplay3.textContent = allUsers[topScoreIndex] + allScores[topScoreIndex]; 
+        scoresDisplayLeft3.textContent = allUsers[topScoreIndex]; 
+        scoresDisplayRight3.textContent = allScores[topScoreIndex];  
         allUsers.splice(topScoreIndex, 1);  
         allScores.splice(topScoreIndex, 1);
     }
