@@ -9,6 +9,23 @@ function geometricArray(start, end, n) {
     return arr;
 }
 
+function topNIndices(arr, n) {
+  return arr
+    .map((_, index) => index)
+    .sort((a, b) => arr[b] - arr[a])
+    .slice(0, n);
+}
+
+function getActiveUser() {
+    const savedUsers = JSON.parse(localStorage.getItem('users'));
+    for (i in savedUsers) {
+        if (savedUsers[i].active === true) {
+            const activeUser = savedUsers[i];
+            return activeUser;
+        }
+    }    
+}
+
 const audioCtx = new AudioContext();
 
 const myButton = document.getElementById('color-btn');
@@ -35,18 +52,38 @@ const closeEqSettings = document.getElementById("close-eq-settings");
 const usernameTextbox = document.getElementById("username-textbox");
 const addUsernameButton = document.getElementById("add-username-button");
 const usernameDisplay = document.getElementById("username-display");
+const scoresDisplay1 = document.getElementById("scores-display1");
+const scoresDisplay2 = document.getElementById("scores-display2");
+const scoresDisplay3 = document.getElementById("scores-display3");
 
 // TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
     if (usernameDisplay) {
+        const activeUser =  getActiveUser()
+        const savedUsername = activeUser.username;
+        usernameDisplay.textContent = `Username: ${savedUsername}`;      
+    }
+    if (scoresDisplay1) {
         const savedUsers = JSON.parse(localStorage.getItem('users'));
+        let scoresDisplayText = "";
+        let savedUsernames = [];
+        let savedScores = [];
         for (i in savedUsers) {
-            if (savedUsers[i].active === true) {
-                const savedUsername = savedUsers[i].username;
-                usernameDisplay.textContent = `Username: ${savedUsername}`;
-                break;
-            }
-        }        
+            const savedUsername = savedUsers[i].username;
+            const savedScore = savedUsers[i].highscore;
+            savedUsernames.push(savedUsername);
+            savedScores.push(savedScore);
+        }
+        // console.log(savedUsernames);
+        // console.log(savedScores);
+
+        // we just need to figure out the logic of looping through the right number of html divs!
+        // or we could hard code all 5, and have a if run out of user loop, display null
+
+        const leaderboardIndices = topNIndices(savedScores);
+        console.log(leaderboardIndices);
+        // scoresDisplayText = scoresDisplayText + savedUsername + savedScore;
+        // scoresDisplay.textContent = scoresDisplayText;   
     }
     await audioCtx.audioWorklet.addModule('../js/pink-noise.js');
 });
@@ -94,7 +131,7 @@ if (addUsernameButton) {
             let user = {
                 username: username,
                 active: true,
-                highscore: 0,
+                scores: [],
             }
             users.push(user);
         }
@@ -244,7 +281,8 @@ if (lineContainer) {
             }
             else {
                 resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz`;
-                scoreText.textContent = `Score: 0`;
+
+                scoreText.textContent = "Score: 0";
             }
             
         }
