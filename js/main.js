@@ -9,13 +9,6 @@ function geometricArray(start, end, n) {
     return arr;
 }
 
-function topNIndices(arr, n) {
-  return arr
-    .map((_, index) => index)
-    .sort((a, b) => arr[b] - arr[a])
-    .slice(0, n);
-}
-
 function getUserInfo() {
     const savedUsers = JSON.parse(localStorage.getItem('users'))
     let activeUser = false;
@@ -32,6 +25,16 @@ function getUserInfo() {
     else {
         return [null, null];
     }
+}
+
+function maxIndex(arr) {
+    let idx = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] > arr[idx]) {
+            idx = i;
+        }
+    }
+    return idx;
 }
 
 const audioCtx = new AudioContext();
@@ -67,34 +70,38 @@ const scoresDisplay3 = document.getElementById("scores-display3");
 // TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
     if (usernameDisplay) {
-        const [savedUsers, index] =  getUserInfo()
+        const [savedUsers, index] =  getUserInfo();
         if (index) {
             const savedUsername = savedUsers[index].username;
             usernameDisplay.textContent = `Username: ${savedUsername}`; 
         }
     }
     if (scoresDisplay1) {
-        let [savedUsers, index] =  getUserInfo()
-        let scoresDisplayText = "";
-        let savedUsernames = [];
-        let savedScores = [];
-        for (i in savedUsers) {
-            const savedUsername = savedUsers[index].username;
-            const savedScore = savedUsers[index].highscore;
-            savedUsernames.push(savedUsername);
-            savedScores.push(savedScore);
+        let [savedUsers, index] = getUserInfo();
+        let allUsers = [];
+        let allScores = [];
+        for (let i in savedUsers) {
+            for (let j in savedUsers[i].scores) {
+                allUsers.push(savedUsers[i].username);
+                allScores.push(savedUsers[i].scores[j]);
+            }
         }
+        topScoreIndex = maxIndex(allScores);
 
-        // console.log(savedUsernames);
-        // console.log(savedScores);
+        // .splice lets us remove the value at a certain index
+        scoresDisplay1.textContent = allUsers[topScoreIndex] + allScores[topScoreIndex]; 
+        allUsers.splice(topScoreIndex, 1);  
+        allScores.splice(topScoreIndex, 1); 
+        
+        topScoreIndex = maxIndex(allScores);
+        scoresDisplay2.textContent = allUsers[topScoreIndex] + allScores[topScoreIndex]; 
+        allUsers.splice(topScoreIndex, 1);  
+        allScores.splice(topScoreIndex, 1);
 
-        // we just need to figure out the logic of looping through the right number of html divs!
-        // or we could hard code all 5, and have a if run out of user loop, display null
-
-        const leaderboardIndices = topNIndices(savedScores);
-        console.log(leaderboardIndices);
-        // scoresDisplayText = scoresDisplayText + savedUsername + savedScore;
-        // scoresDisplay.textContent = scoresDisplayText;   
+        topScoreIndex = maxIndex(allScores);
+        scoresDisplay3.textContent = allUsers[topScoreIndex] + allScores[topScoreIndex]; 
+        allUsers.splice(topScoreIndex, 1);  
+        allScores.splice(topScoreIndex, 1);
     }
     await audioCtx.audioWorklet.addModule('../js/pink-noise.js');
 });
