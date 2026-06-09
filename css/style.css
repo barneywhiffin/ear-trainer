@@ -281,7 +281,16 @@ footer a {
     border: 2px solid white;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 2fr 2fr 2fr 1fr;
+    grid-template-rows: 1fr 2fr 2fr 2fr;
+    .gold-row {
+        background: gold;
+    }
+    .silver-row {
+        background: silver;
+    }
+    .bronze-row {
+        background: orange;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
