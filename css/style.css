@@ -258,6 +258,12 @@ dialog::backdrop {
   margin-top: 15px;
 }
 
+#close-eq-settings {
+  background-color: #dc3545;
+  color: white;
+  margin-top: 15px;
+}
+
 .instruct {
     margin-top: 30px;
 }
