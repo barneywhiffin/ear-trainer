@@ -1,122 +1,52 @@
-function geometricArray(start, end, n) {
-    const ratio = Math.pow(end / start, 1 / (n - 1));
-    const arr = [];
-    for (let i = 0; i < n; i++) {
-
-        arr.push(start * Math.pow(ratio, i));
-
-    }
-    return arr;
-}
-
-// TODO: APPARENTLY FOR IN IS SHIT FOR ARRAYS, USE FOR OF
-// look it up and stuff
-// for (const x of arr) {
-//     console.log(x);
-// }
-// this ^^ will print each value in array !!!
-
-function getUserInfo() {
-    const savedUsers = JSON.parse(localStorage.getItem('users'))
-    let activeUser = false;
-    let index = 0;
-    for (let i in savedUsers) {
-        if (savedUsers[i].active === true) {
-            activeUser = true;
-            index = i
-        }
-    } 
-    if (activeUser) {
-        return [savedUsers, index];
-    }
-    else {
-        return [null, null];
-    }
-}
-
-function maxIndex(arr) {
-    let idx = 0;
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] > arr[idx]) {
-            idx = i;
-        }
-    }
-    return idx;
-}
+import {maxIndex, geometricArray, getUserInfo, changeBackgroundColor} from "./utils.js";
+import * as page from "./elements.js";
 
 const audioCtx = new AudioContext();
-
-const myButton = document.getElementById('color-btn');
-const myBody = document.body;
-const lineContainer = document.getElementById("line-container");
-const line = document.getElementById("line");
-const eqGameButton = document.getElementById("eq-game-button");
 
 // need to think of a way of automatically aligning this better with graph axis
 // , at all screen scalings
 const freqs = geometricArray(45, 11000, 100);
 
-const guessFreqText = document.getElementById("guess-freq");
-const resultText = document.getElementById("result");
-const scoreText = document.getElementById("score-text");
-
-const eqGameHowto = document.getElementById("eq-game-howto");
-const openEqHowto = document.getElementById("open-eq-howto");
-const closeEqHowto = document.getElementById("close-eq-howto");
-const eqGameSettings = document.getElementById("eq-game-settings");
-const openEqSettings = document.getElementById("open-eq-settings");
-const closeEqSettings = document.getElementById("close-eq-settings");
-
-const usernameTextbox = document.getElementById("username-textbox");
-const addUsernameButton = document.getElementById("add-username-button");
-const usernameDisplay = document.getElementById("username-display");
-const scoresDisplayLeft1 = document.getElementById("scores-display-left1");
-const scoresDisplayRight1 = document.getElementById("scores-display-right1");
-const scoresDisplayLeft2 = document.getElementById("scores-display-left2");
-const scoresDisplayRight2 = document.getElementById("scores-display-right2");
-const scoresDisplayLeft3 = document.getElementById("scores-display-left3");
-const scoresDisplayRight3 = document.getElementById("scores-display-right3");
-
 // TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
-    if (usernameDisplay) {
+    if (page.usernameDisplay) {
         const [savedUsers, index] =  getUserInfo();
         if (index) {
             const savedUsername = savedUsers[index].username;
-            usernameDisplay.textContent = `Username: ${savedUsername}`; 
+            page.usernameDisplay.textContent = `Username: ${savedUsername}`; 
         }
     }
-    if (scoresDisplayLeft1) {
+    if (page.scoresDisplayLeft1) {
         let [savedUsers, index] = getUserInfo();
         let allUsers = [];
         let allScores = [];
-        for (let i in savedUsers) {
-            for (let j in savedUsers[i].scores) {
+        for (let i = 0; i < savedUsers.length; i++) {
+            for (let j = 0; j < savedUsers[i].scores.length; j++) {
                 allUsers.push(savedUsers[i].username);
                 allScores.push(savedUsers[i].scores[j]);
             }
         }
-        topScoreIndex = maxIndex(allScores);
 
+        let topScoreIndex = maxIndex(allScores);
+        page.scoresDisplayLeft1.textContent = allUsers[topScoreIndex]; 
+        page.scoresDisplayRight1.textContent = allScores[topScoreIndex]; 
         // .splice lets us remove the value at a certain index
-        scoresDisplayLeft1.textContent = allUsers[topScoreIndex]; 
-        scoresDisplayRight1.textContent = allScores[topScoreIndex]; 
         allUsers.splice(topScoreIndex, 1);  
         allScores.splice(topScoreIndex, 1); 
         
         topScoreIndex = maxIndex(allScores);
-        scoresDisplayLeft2.textContent = allUsers[topScoreIndex]; 
-        scoresDisplayRight2.textContent = allScores[topScoreIndex]; 
+        page.scoresDisplayLeft2.textContent = allUsers[topScoreIndex]; 
+        page.scoresDisplayRight2.textContent = allScores[topScoreIndex]; 
         allUsers.splice(topScoreIndex, 1);  
         allScores.splice(topScoreIndex, 1);
 
         topScoreIndex = maxIndex(allScores);
-        scoresDisplayLeft3.textContent = allUsers[topScoreIndex]; 
-        scoresDisplayRight3.textContent = allScores[topScoreIndex];  
-        allUsers.splice(topScoreIndex, 1);  
-        allScores.splice(topScoreIndex, 1);
+        page.scoresDisplayLeft3.textContent = allUsers[topScoreIndex]; 
+        page.scoresDisplayRight3.textContent = allScores[topScoreIndex];  
+
+        // crucially note that nowhere here is the modified data pushed back to local storage
     }
-    await audioCtx.audioWorklet.addModule('../js/pink-noise.js');
+    await audioCtx.audioWorklet.addModule('../src/pink-noise.js');
 });
 
 async function ensureAudioReady() {
@@ -126,22 +56,22 @@ async function ensureAudioReady() {
 }
 
 // eq game popup windows
-if (openEqHowto) {
-    openEqHowto.addEventListener("click", () => eqGameHowto.showModal());
-    closeEqHowto.addEventListener("click", () => eqGameHowto.close());
+if (page.openEqHowto) {
+    page.openEqHowto.addEventListener("click", () => page.eqGameHowto.showModal());
+    page.closeEqHowto.addEventListener("click", () => page.eqGameHowto.close());
 }
 
-if (openEqSettings) {
-    openEqSettings.addEventListener("click", () => eqGameSettings.showModal());
-    closeEqSettings.addEventListener("click", () => eqGameSettings.close());
+if (page.openEqSettings) {
+    page.openEqSettings.addEventListener("click", () => page.eqGameSettings.showModal());
+    page.closeEqSettings.addEventListener("click", () => page.eqGameSettings.close());
 }
 
 // TODO: eventually upgrade into a user class with scores
 
 // most ideally, have the confirm button greyed out and unclickable until something in textbox!!
-if (addUsernameButton) {
-    addUsernameButton.addEventListener("click", function(event) {
-        const username = usernameTextbox.value;
+if (page.addUsernameButton) {
+    page.addUsernameButton.addEventListener("click", function(event) {
+        const username = page.usernameTextbox.value;
         let [savedUsers, index] =  getUserInfo()
 
         if (!index) {
@@ -157,7 +87,7 @@ if (addUsernameButton) {
 
         // probably jank af workaround but it is doing the job
         let userExistsFlag = false;
-        for (i in savedUsers) {
+        for (let i = 0; i < savedUsers.length; i++) {
             savedUsers[i].active = false;
             if (username === savedUsers[i].username) {
                 savedUsers[i].active = true;
@@ -173,25 +103,15 @@ if (addUsernameButton) {
             savedUsers.push(newUser);
         }
         localStorage.setItem('users', JSON.stringify(savedUsers));
-        usernameTextbox.value = "";
-        if (usernameDisplay) {
-            usernameDisplay.textContent = `Username: ${username}`;
+        page.usernameTextbox.value = "";
+        if (page.usernameDisplay) {
+            page.usernameDisplay.textContent = `Username: ${username}`;
         }
     })
 }
 
-// background colour button function
-function changeBackgroundColor() {
-    // Generate a random hex color (e.g., #3498db)
-    const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
-    
-    // Apply that color to the body's background
-    myBody.style.backgroundColor = randomColor;
-    // console.log("The button was clicked!")
-}
-
-if (myButton) {
-    myButton.addEventListener('click', changeBackgroundColor);
+if (page.myButton) {
+    page.myButton.addEventListener('click', changeBackgroundColor);
 }
 
 // const gainSelection = document.getElementById("gain-select");
@@ -205,8 +125,8 @@ let score = 0;
 let clicks = 0;
 let gameFreqs = [];
 
-if (eqGameButton) {
-    eqGameButton.addEventListener('click', async() => {
+if (page.eqGameButton) {
+    page.eqGameButton.addEventListener('click', async() => {
         if (round > clicks) {
             // lineContainer.style.border = "2px solid red";
             // setTimeout(() => {
@@ -219,8 +139,8 @@ if (eqGameButton) {
         else {
             // set / reset things
 
-            guessFreqText.textContent = "";
-            resultText.textContent = "";
+            page.guessFreqText.textContent = "";
+            page.resultText.textContent = "";
 
             round += 1;
 
@@ -267,25 +187,25 @@ if (eqGameButton) {
     });
 }
 
-if (lineContainer) {
-    lineContainer.addEventListener("mousemove", (e) => {
-        const rect = lineContainer.getBoundingClientRect();
+if (page.lineContainer) {
+    page.lineContainer.addEventListener("mousemove", (e) => {
+        const rect = page.lineContainer.getBoundingClientRect();
         const x = e.clientX - rect.left;
 
-        line.style.transform = `translateX(${x}px)`;
+        page.line.style.transform = `translateX(${x}px)`;
     });
 
-    lineContainer.addEventListener("mouseenter", () => {
-        line.style.display = "block";
+    page.lineContainer.addEventListener("mouseenter", () => {
+        page.line.style.display = "block";
     });
 
-    lineContainer.addEventListener("mouseleave", () => {
-        line.style.display = "none";
+    page.lineContainer.addEventListener("mouseleave", () => {
+        page.line.style.display = "none";
     });
 
     // add start/next round button to generate numbers
 
-    lineContainer.addEventListener('click', function(event) {
+    page.lineContainer.addEventListener('click', function(event) {
       
         if (clicks == round) {
             // eqGameButton.style.background = "red";
@@ -303,25 +223,25 @@ if (lineContainer) {
             const ceiling = gameFreqs.at(-1)*2;
 
             // fetch current width of container (const as new function each click)
-            const boxWidth = lineContainer.offsetWidth;
+            const boxWidth = page.lineContainer.offsetWidth;
             const mouseLocation = Math.round(100*event.offsetX/boxWidth);
 
             const guessFreq = Math.round(freqs[mouseLocation]);
-            guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
+            page.guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
             const displayAnswer = Math.round(gameFreqs.at(-1));
 
             if (guessFreq > floor && guessFreq < ceiling) {
-                resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
+                page.resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
                 score += 1;
-                scoreText.textContent = `Score: ${score}`;
+                page.scoreText.textContent = `Score: ${score}`;
             }
             else {
-                resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz`;
+                page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz`;
                 let [savedUsers, index] = getUserInfo();
                 // console.log(savedUsers);
                 savedUsers[index].scores.push(score);
                 localStorage.setItem('users', JSON.stringify(savedUsers));
-                scoreText.textContent = `Score: 0`;
+                page.scoreText.textContent = `Score: 0`;
             }
             
         }

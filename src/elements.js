@@ -1,0 +1,26 @@
+export const myButton = document.getElementById('color-btn');
+export const myBody = document.body;
+export const lineContainer = document.getElementById("line-container");
+export const line = document.getElementById("line");
+export const eqGameButton = document.getElementById("eq-game-button");
+
+export const guessFreqText = document.getElementById("guess-freq");
+export const resultText = document.getElementById("result");
+export const scoreText = document.getElementById("score-text");
+
+export const eqGameHowto = document.getElementById("eq-game-howto");
+export const openEqHowto = document.getElementById("open-eq-howto");
+export const closeEqHowto = document.getElementById("close-eq-howto");
+export const eqGameSettings = document.getElementById("eq-game-settings");
+export const openEqSettings = document.getElementById("open-eq-settings");
+export const closeEqSettings = document.getElementById("close-eq-settings");
+
+export const usernameTextbox = document.getElementById("username-textbox");
+export const addUsernameButton = document.getElementById("add-username-button");
+export const usernameDisplay = document.getElementById("username-display");
+export const scoresDisplayLeft1 = document.getElementById("scores-display-left1");
+export const scoresDisplayRight1 = document.getElementById("scores-display-right1");
+export const scoresDisplayLeft2 = document.getElementById("scores-display-left2");
+export const scoresDisplayRight2 = document.getElementById("scores-display-right2");
+export const scoresDisplayLeft3 = document.getElementById("scores-display-left3");
+export const scoresDisplayRight3 = document.getElementById("scores-display-right3");
