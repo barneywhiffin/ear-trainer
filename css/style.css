@@ -304,6 +304,9 @@ footer a {
     background: #000000ed;
     color: white;
   }
+  .leaderboard-table p {
+    color: black;
+  }
   header {
     background: darkblue;
   }
