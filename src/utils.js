@@ -23,12 +23,14 @@ export function getUserInfo() {
     const savedUsers = JSON.parse(localStorage.getItem('users'))
     let activeUser = false;
     let index = 0;
-    for (let i = 0; i < savedUsers.length; i++) {
-        if (savedUsers[i].active === true) {
-            activeUser = true;
-            index = i
-        }
-    } 
+    if (savedUsers) {
+        for (let i = 0; i < savedUsers.length; i++) {
+            if (savedUsers[i].active === true) {
+                activeUser = true;
+                index = i
+            }
+        } 
+    }
     return activeUser ? [savedUsers, index] : [null, null];
 }
 
