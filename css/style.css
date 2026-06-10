@@ -297,6 +297,10 @@ footer a {
     .bronze-row {
         background: orange;
     }
+    p {
+        display: flex;
+        align-items: center;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
