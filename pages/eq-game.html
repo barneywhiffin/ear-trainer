@@ -83,6 +83,8 @@
     </div>
 </main>
 
+<!--TODO: display a) current range of guess and b) upon click, location of correct answer (green if good, red line if bad)-->
+
 <footer>
     <div class="container">
         <p>Other games to follow!</p>
@@ -99,17 +101,27 @@
 </dialog>
 
 <dialog id="eq-game-settings">
-  <h2>Settings</h2>
-  <p>A toggle here</p>
-  <p>A checkbox here</p>
-    <div class="gain-select">
+  <h2 style="margin-bottom: 10px;">Settings</h2>
+  <hr>
+  <p style="font-size: large; text-align: center; margin-top: 10px;">Eq Gain</p>
+  <div class="eq-gain-settings-area">
+      <p>Cut</p>
+      <p>Boost</p>
+      <p>Mixture</p>
+      <input type="checkbox" id="eq-cut-box">
+      <input type="checkbox" id="eq-boost-box">
+      <input type="checkbox" id="eq-mix-box">
+  </div>
+  <hr>
+
+    <!-- <div class="gain-select">
         <label id="gain-label">Select Gain:</label>
         <select name="gain" id="gain-select">
             <option value="1">1dB</option>
             <option value="2">2dB</option>
             <option value="3">3dB</option>
         </select>
-    </div>
+    </div> -->
   
   <button id="close-eq-settings">Close</button>
 </dialog>

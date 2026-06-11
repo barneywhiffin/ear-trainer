@@ -303,6 +303,16 @@ footer a {
     }
 }
 
+.eq-gain-settings-area {
+    margin: 10px auto 15px auto;
+    width: 60%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    p {
+        margin: 0 auto;
+    }
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background: #000000ed;
@@ -316,5 +326,9 @@ footer a {
   }
   footer {
     background: darkblue;
+  }
+  dialog {
+    background: black;
+    color: white;
   }
 }
