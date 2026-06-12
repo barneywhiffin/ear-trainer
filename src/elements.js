@@ -14,6 +14,9 @@ export const closeEqHowto = document.getElementById("close-eq-howto");
 export const eqGameSettings = document.getElementById("eq-game-settings");
 export const openEqSettings = document.getElementById("open-eq-settings");
 export const closeEqSettings = document.getElementById("close-eq-settings");
+export const eqCutBox = document.getElementById("eq-cut-box");
+export const eqBoostBox = document.getElementById("eq-boost-box");
+export const eqMixBox = document.getElementById("eq-mix-box");
 
 export const usernameTextbox = document.getElementById("username-textbox");
 export const addUsernameButton = document.getElementById("add-username-button");
