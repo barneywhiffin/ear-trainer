@@ -7,6 +7,11 @@ const audioCtx = new AudioContext();
 // , at all screen scalings
 const freqs = geometricArray(45, 11000, 100);
 
+// TODO: stop audio playing when guess is made
+// should actually be continuous up to this point imo
+// and allow replay of sound after round (either way)
+// also allow space for next round!!!
+
 // TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
     if (page.usernameDisplay) {
@@ -63,6 +68,25 @@ if (page.openEqHowto) {
 
 if (page.openEqSettings) {
     page.openEqSettings.addEventListener("click", () => page.eqGameSettings.showModal());
+    if (page.eqCutBox && page.eqBoostBox && page.eqMixBox) {
+
+        // if we wanted state of checkbox knowledge only, use change not click
+        page.eqCutBox.addEventListener("click", function(event) {
+            this.checked = true;
+            page.eqBoostBox.checked = false;
+            page.eqMixBox.checked = false;
+        })
+        page.eqBoostBox.addEventListener("click", function(event) {
+            this.checked = true;
+            page.eqCutBox.checked = false;
+            page.eqMixBox.checked = false;
+        })
+        page.eqMixBox.addEventListener("click", function(event) {
+            this.checked = true;
+            page.eqCutBox.checked = false;
+            page.eqBoostBox.checked = false;
+        })
+    }
     page.closeEqSettings.addEventListener("click", () => page.eqGameSettings.close());
 }
 
