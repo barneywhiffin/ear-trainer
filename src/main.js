@@ -3,14 +3,15 @@ import * as page from "./elements.js";
 
 const audioCtx = new AudioContext();
 
-// need to think of a way of automatically aligning this better with graph axis
-// , at all screen scalings
-const freqs = geometricArray(45, 11000, 100);
-
 // TODO: stop audio playing when guess is made
 // should actually be continuous up to this point imo
 // and allow replay of sound after round (either way)
 // also allow space for next round!!!
+
+const lowestFreq = 62.5;
+const highestFreq = 8000;
+const nFreqs = 5000;
+const freqs = geometricArray(lowestFreq, highestFreq, nFreqs);
 
 // TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
@@ -268,28 +269,30 @@ if (page.lineContainer) {
 
     page.lineContainer.addEventListener('click', function(event) {
       
-        if (clicks == round) {
-            // eqGameButton.style.background = "red";
-            // setTimeout(() => {
-            //     eqGameButton.style.background = "initial";
-            // }, 1000);
-            alert('are you thick mate or what. how about press go first??');
-        }
+        // if (clicks == round) {
+        //     // eqGameButton.style.background = "red";
+        //     // setTimeout(() => {
+        //     //     eqGameButton.style.background = "initial";
+        //     // }, 1000);
+        //     alert('are you thick mate or what. how about press go first??');
+        // }
 
-        else {
+        // else {
             clicks += 1;
 
             // eventually allow custom tolerance
-            const floor = gameFreqs.at(-1)/2;
-            const ceiling = gameFreqs.at(-1)*2;
+            const floor = gameFreqs.at(-1)*0.8;
+            const ceiling = gameFreqs.at(-1)*1.25;
 
             // fetch current width of container (const as new function each click)
             const boxWidth = page.lineContainer.offsetWidth;
-            const mouseLocation = Math.round(100*event.offsetX/boxWidth);
+            const mouseLocation = Math.round(nFreqs*event.offsetX/boxWidth);
 
             const guessFreq = Math.round(freqs[mouseLocation]);
             page.guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
             const displayAnswer = Math.round(gameFreqs.at(-1));
+
+            console.log(guessFreq);
 
             if (guessFreq > floor && guessFreq < ceiling) {
                 page.resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
@@ -305,6 +308,6 @@ if (page.lineContainer) {
                 page.scoreText.textContent = `Score: 0`;
             }
             
-        }
+        // }
     });
 }

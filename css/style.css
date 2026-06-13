@@ -183,16 +183,13 @@ section {
     display: grid;
     grid-template-rows: 1fr auto;
     ul {
-        display: flex;
-        justify-content: space-around;
-        /* margin: 0 10px; */
+        display: grid;
+        grid-template-columns: 1fr repeat(6, 2fr) 1fr;
         list-style: none;
         color: white;
         li {
-            display: flex;
             /* border: 2px solid white; */
-            justify-content: center;
-            min-width: 30px;
+            text-align: center;
         }
     }
 }
