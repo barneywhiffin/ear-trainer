@@ -211,12 +211,11 @@ if (page.eqGameButton) {
             const now = audioCtx.currentTime;
             const duration = 2.0;
             const fadeTime = 0.1;
-            const gain = 0.2;
+            const audioGain = 0.2;
             const eqFreq = newFreq;
-            const eqQ = 2.0;
+            const eqQ = 2.5;
             const sign = page.eqBoostBox.checked ? 1 : -1;
-            const eqGain = sign*12;
-            console.log(eqGain);
+            const eqGain = sign*6;
 
             const pinkNoise = new AudioWorkletNode(audioCtx, 'pink-noise-processor');
             const envelope = audioCtx.createGain();
@@ -228,8 +227,8 @@ if (page.eqGameButton) {
             eqBand.gain.value = eqGain;   
 
             envelope.gain.setValueAtTime(0, now);
-            envelope.gain.linearRampToValueAtTime(gain, now + fadeTime); // Quick fade in
-            envelope.gain.setValueAtTime(gain, now + duration - fadeTime); // Sustain
+            envelope.gain.linearRampToValueAtTime(audioGain, now + fadeTime); // Quick fade in
+            envelope.gain.setValueAtTime(audioGain, now + duration - fadeTime); // Sustain
             envelope.gain.linearRampToValueAtTime(0, now + duration); // Fade out
 
             pinkNoise.connect(eqBand);
@@ -243,6 +242,15 @@ if (page.eqGameButton) {
             }, (duration + 0.05) * 1000);
         }
     });
+}
+
+function getToleranceFromRound(round) {
+    const initTol = 2;
+    const endTol = 1.1;
+    const arr = geometricArray(initTol, endTol, 20);
+    // inverse square law to start with?
+    const tol = round > 20 ? endTol : arr[round-1];
+    return tol;
 }
 
 if (page.lineContainer) {
@@ -265,20 +273,20 @@ if (page.lineContainer) {
 
     page.lineContainer.addEventListener('click', function(event) {
       
-        // if (clicks == round) {
-        //     // eqGameButton.style.background = "red";
-        //     // setTimeout(() => {
-        //     //     eqGameButton.style.background = "initial";
-        //     // }, 1000);
-        //     alert('are you thick mate or what. how about press go first??');
-        // }
+        if (clicks == round) {
+            // eqGameButton.style.background = "red";
+            // setTimeout(() => {
+            //     eqGameButton.style.background = "initial";
+            // }, 1000);
+            alert('are you thick mate or what. how about press go first??');
+        }
 
-        // else {
+        else {
             clicks += 1;
 
-            // eventually allow custom tolerance
-            const floor = gameFreqs.at(-1)*0.8;
-            const ceiling = gameFreqs.at(-1)*1.25;
+            const tol = getToleranceFromRound(round);
+            const floor = gameFreqs.at(-1)/tol;
+            const ceiling = gameFreqs.at(-1)*tol;
 
             // fetch current width of container (const as new function each click)
             const boxWidth = page.lineContainer.offsetWidth;
@@ -288,8 +296,6 @@ if (page.lineContainer) {
             page.guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
             const displayAnswer = Math.round(gameFreqs.at(-1));
 
-            console.log(guessFreq);
-
             if (guessFreq > floor && guessFreq < ceiling) {
                 page.resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
                 score += 1;
@@ -297,13 +303,16 @@ if (page.lineContainer) {
             }
             else {
                 page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz`;
+        
                 let [savedUsers, index] = getUserInfo();
                 // console.log(savedUsers);
                 savedUsers[index].scores.push(score);
                 localStorage.setItem('users', JSON.stringify(savedUsers));
-                page.scoreText.textContent = `Score: 0`;
+                page.scoreText.textContent = "";
+                round = 0;
+                score = 0;
             }
             
-        // }
+        }
     });
 }
