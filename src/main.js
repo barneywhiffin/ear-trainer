@@ -100,14 +100,16 @@ if (eqSettingsCheck) {
 
     // TODO: need to add writing logic here too !!
 
-    const eqGainSetting = savedUsers[index].eqChoice;
-    if (eqGainSetting === 'boost') {
-        page.eqBoostBox.checked = true;
+    if (index || index === 0) {
+        const eqGainSetting = savedUsers[index].eqChoice;
+        if (eqGainSetting === 'boost') {
+            page.eqBoostBox.checked = true;
+        }
+        else if (eqGainSetting === 'cut') {
+            page.eqCutBox.checked = true;
+        }
     }
-    else if (eqGainSetting === 'cut') {
-        page.eqCutBox.checked = true;
-    }
-
+    
     page.closeEqSettings.addEventListener("click", () => page.eqGameSettings.close());
 }
 
@@ -167,19 +169,13 @@ if (page.myButton) {
     page.myButton.addEventListener('click', changeBackgroundColor);
 }
 
-// const gainSelection = document.getElementById("gain-select");
-
-// if (gainSelection) {
-
-// }
-
 let round = 0;
 let score = 0;
 let clicks = 0;
 let gameFreqs = [];
 
 if (page.eqGameButton) {
-    if (localStorage.getItem('users')) {
+    if (localStorage.getItem('users') != null) {
         page.eqGameButton.disabled = false;
     }
     else {
