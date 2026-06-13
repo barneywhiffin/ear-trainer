@@ -16,7 +16,7 @@ const freqs = geometricArray(45, 11000, 100);
 window.addEventListener('load', async () => {
     if (page.usernameDisplay) {
         const [savedUsers, index] =  getUserInfo();
-        if (index) {
+        if (index || index === 0) {
             const savedUsername = savedUsers[index].username;
             page.usernameDisplay.textContent = `Username: ${savedUsername}`; 
         }
@@ -66,28 +66,52 @@ if (page.openEqHowto) {
     page.closeEqHowto.addEventListener("click", () => page.eqGameHowto.close());
 }
 
-if (page.openEqSettings) {
-    page.openEqSettings.addEventListener("click", () => page.eqGameSettings.showModal());
-    if (page.eqCutBox && page.eqBoostBox && page.eqMixBox) {
+const eqSettingsCheck = page.openEqSettings && page.eqCutBox && page.eqBoostBox && page.eqMixBox && page.closeEqSettings;
 
-        // if we wanted state of checkbox knowledge only, use change not click
-        page.eqCutBox.addEventListener("click", function(event) {
+if (eqSettingsCheck) {
+    page.openEqSettings.addEventListener("click", () => page.eqGameSettings.showModal());
+
+    let boxes = [page.eqCutBox, page.eqBoostBox, page.eqMixBox];
+    let [savedUsers, index] = getUserInfo();
+
+    for (let i = 0; i < boxes.length; i++) {
+        const thisBox = boxes[i];
+        thisBox.addEventListener("click", function(event) {
             this.checked = true;
-            page.eqBoostBox.checked = false;
-            page.eqMixBox.checked = false;
-        })
-        page.eqBoostBox.addEventListener("click", function(event) {
-            this.checked = true;
-            page.eqCutBox.checked = false;
-            page.eqMixBox.checked = false;
-        })
-        page.eqMixBox.addEventListener("click", function(event) {
-            this.checked = true;
-            page.eqCutBox.checked = false;
-            page.eqBoostBox.checked = false;
+            boxes.splice(i, 1);
+            for (let j = 0; j < boxes.length; j++) {
+                boxes[j].checked = false;
+            }
+            boxes.splice(i, 0, thisBox);
+
+            if (index || index === 0) {
+                if (thisBox === page.eqBoostBox) {
+                    savedUsers[index].eqChoice = "boost";
+                    localStorage.setItem('users', JSON.stringify(savedUsers));
+                }
+                else if (thisBox === page.eqCutBox) {
+                    savedUsers[index].eqChoice = "cut";
+                    localStorage.setItem('users', JSON.stringify(savedUsers));
+                }
+            }
         })
     }
+
+    // TODO: need to add writing logic here too !!
+
+    const eqGainSetting = savedUsers[index].eqChoice;
+    if (eqGainSetting === 'boost') {
+        page.eqBoostBox.checked = true;
+    }
+    else if (eqGainSetting === 'cut') {
+        page.eqCutBox.checked = true;
+    }
+
     page.closeEqSettings.addEventListener("click", () => page.eqGameSettings.close());
+}
+
+if (page.openEqSettings && !eqSettingsCheck) {
+    console.log('Error: at least 1 of html elements eqcutbox, boostbox, mixbox, or closeeq is missing');
 }
 
 // TODO: eventually upgrade into a user class with scores
@@ -103,6 +127,7 @@ if (page.addUsernameButton) {
             let newUser = {
                 username: username,
                 active: true,
+                eqChoice: "boost",
                 scores: [],
             }
             users.push(newUser);
@@ -119,9 +144,12 @@ if (page.addUsernameButton) {
             }
         }
         if (!userExistsFlag) {
-            let newUser = {
+            // const prevents reassigning the variable, not modifying the object it points to!
+            // aka const means "this variable always refers to the same object"
+            const newUser = {
                 username: username,
                 active: true,
+                eqChoice: "boost",
                 scores: [],
             }
             savedUsers.push(newUser);
@@ -150,6 +178,13 @@ let clicks = 0;
 let gameFreqs = [];
 
 if (page.eqGameButton) {
+    if (localStorage.getItem('users')) {
+        page.eqGameButton.disabled = false;
+    }
+    else {
+        page.eqGoErrorText.textContent = "Please navigate to Account and create a username first";
+    }
+
     page.eqGameButton.addEventListener('click', async() => {
         if (round > clicks) {
             // lineContainer.style.border = "2px solid red";
@@ -182,7 +217,9 @@ if (page.eqGameButton) {
             const gain = 0.2;
             const eqFreq = newFreq;
             const eqQ = 2.0;
-            const eqGain = 12;
+            const sign = page.eqBoostBox.checked ? 1 : -1;
+            const eqGain = sign*12;
+            console.log(eqGain);
 
             const pinkNoise = new AudioWorkletNode(audioCtx, 'pink-noise-processor');
             const envelope = audioCtx.createGain();

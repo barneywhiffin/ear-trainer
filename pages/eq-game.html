@@ -78,7 +78,8 @@
                 <p id="result"></p>
             </div>
             <!-- TODO:  replace with play and pause buttons -->
-            <button id="eq-game-button">Go</button>
+            <button id="eq-game-button" disabled>Go</button>
+            <p id="eq-go-error-text" style="margin-top: 5px;"></p>
         </div>
     </div>
 </main>
@@ -107,10 +108,10 @@
   <div class="eq-gain-settings-area">
       <p>Cut</p>
       <p>Boost</p>
-      <p>Mixture</p>
+      <p style="color: grey;">Mixture</p>
       <input type="checkbox" id="eq-cut-box">
-      <input type="checkbox" id="eq-boost-box" checked>
-      <input type="checkbox" id="eq-mix-box">
+      <input type="checkbox" id="eq-boost-box">
+      <input type="checkbox" id="eq-mix-box" disabled>
   </div>
   <hr>
 

@@ -22,7 +22,7 @@ export function geometricArray(start, end, n) {
 export function getUserInfo() {
     const savedUsers = JSON.parse(localStorage.getItem('users'))
     let activeUser = false;
-    let index = 0;
+    let index;
     if (savedUsers) {
         for (let i = 0; i < savedUsers.length; i++) {
             if (savedUsers[i].active === true) {
