@@ -218,8 +218,14 @@ section {
     /* hides line on page load */
 }
 
-#eq-game-button {
-    padding: 10px 30px;
+.eq-game-buttons {
+    display: flex;
+    gap: 10px;
+    button {
+        /* padding: 10px 10px; */
+        width: 100px;
+        height: 50px;
+    }
 }
 
 .green-button {
@@ -310,6 +316,16 @@ footer a {
     width: 60%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    p {
+        margin: 0 auto;
+    }
+}
+
+.eq-gain-settings-area2 {
+    margin: 10px auto 15px auto;
+    width: 60%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     p {
         margin: 0 auto;
     }

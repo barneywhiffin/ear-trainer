@@ -2,7 +2,8 @@ export const myButton = document.getElementById('color-btn');
 export const myBody = document.body;
 export const lineContainer = document.getElementById("line-container");
 export const line = document.getElementById("line");
-export const eqGameButton = document.getElementById("eq-game-button");
+export const eqGameGoButton = document.getElementById("eq-game-go-button");
+export const eqGameReplayButton = document.getElementById("eq-game-replay-button");
 
 export const guessFreqText = document.getElementById("guess-freq");
 export const resultText = document.getElementById("result");

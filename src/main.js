@@ -165,23 +165,24 @@ let score = 0;
 let clicks = 0;
 let gameFreqs = [];
 
-if (page.eqGameButton) {
+if (page.eqGameGoButton) {
+    page.eqGameGoButton.textContent = "New Game";
     if (localStorage.getItem('users') != null) {
-        page.eqGameButton.disabled = false;
+        page.eqGameGoButton.disabled = false;
     }
     else {
         page.eqGoErrorText.textContent = "Please navigate to Account and create a username first";
     }
 
-    page.eqGameButton.addEventListener('click', async() => {
+    page.eqGameGoButton.addEventListener('click', async() => {
 
         page.gameOverText.textContent = "";
 
         page.guessFreqText.textContent = "";
         page.resultText.textContent = "";
         round += 1;
-
-        page.eqGameButton.disabled = true;
+        page.eqGameGoButton.textContent = "Next Round";
+        page.eqGameGoButton.disabled = true;
 
         const newFreq = freqs[Math.floor(Math.random() * freqs.length)];
         gameFreqs.push(newFreq);
@@ -212,6 +213,7 @@ if (page.lineContainer) {
 
     // TODO: add start/next round button to generate numbers
     // TODO: allow sound replay
+    // TODO: allow modification of default audio length. slider. user saved
 
     page.lineContainer.addEventListener('click', function(event) {
         if (!roundCheck(round, score)) return;
@@ -238,7 +240,7 @@ if (page.lineContainer) {
             page.resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
             score += 1;
             page.scoreText.textContent = `Score: ${score}`;
-            page.eqGameButton.disabled = false;
+            page.eqGameGoButton.disabled = false;
         }
         else {
             page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz.`;
@@ -249,7 +251,13 @@ if (page.lineContainer) {
             page.scoreText.textContent = "";
             round = 0;
             score = 0;
-            page.eqGameButton.disabled = false;
+            page.eqGameGoButton.textContent = "New Game";
+            page.eqGameGoButton.disabled = false;
+
+            page.eqGameReplayButton.disabled = false;
+            page.eqGameReplayButton.addEventListener('click', async() => {
+                generatePinkNoise(await ensureAudioReady, audioCtx, gameFreqs.at(-1), page.eqBoostBox, 'pink-noise-processor');
+            })
         }
     });
 }

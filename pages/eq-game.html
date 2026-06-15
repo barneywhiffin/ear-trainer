@@ -79,7 +79,10 @@
                 <p id="result"></p>
             </div>
             <!-- TODO:  replace with play and pause buttons -->
-            <button id="eq-game-button" disabled>Go</button>
+            <div class="eq-game-buttons">
+                <button id="eq-game-go-button" disabled></button>
+                <button id="eq-game-replay-button" disabled>Replay Sound</button>
+            </div>
             <p id="eq-go-error-text" style="margin-top: 5px;"></p>
         </div>
     </div>
@@ -105,7 +108,7 @@
 <dialog id="eq-game-settings">
   <h2 style="margin-bottom: 10px;">Settings</h2>
   <hr>
-  <p style="font-size: large; text-align: center; margin-top: 10px;">Eq Gain</p>
+  <p style="font-size: large; text-align: center; margin-top: 10px;">Eq Cut/Boost</p>
   <div class="eq-gain-settings-area">
       <p>Cut</p>
       <p>Boost</p>
@@ -113,6 +116,16 @@
       <input type="checkbox" id="eq-cut-box">
       <input type="checkbox" id="eq-boost-box">
       <input type="checkbox" id="eq-mix-box" disabled>
+  </div>
+  <hr>
+  <p style="font-size: large; text-align: center; margin-top: 10px;">Difficulty</p>
+  <div class="eq-gain-settings-area2">
+      <p>Easy</p>
+      <p>Hard</p>
+      <input type="checkbox">
+      <input type="checkbox">
+      <p>(6dB)</p>
+      <p>(3dB)</p>
   </div>
   <hr>
 
