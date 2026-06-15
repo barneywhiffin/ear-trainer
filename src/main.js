@@ -1,4 +1,4 @@
-import {maxIndex, geometricArray, getUserInfo, getToleranceFromRound, changeBackgroundColor} from "./utils.js";
+import {maxIndex, geometricArray, getUserInfo, generatePinkNoise, getToleranceFromRound, roundCheck, changeBackgroundColor} from "./utils.js";
 import * as page from "./elements.js";
 
 const audioCtx = new AudioContext();
@@ -75,14 +75,10 @@ if (eqSettingsCheck) {
         const thisBox = boxes[i];
         thisBox.addEventListener("click", function(event) {
             this.checked = true;
-            // simplest way to tick all others false
-            // is to remove the current one from the array
             boxes.splice(i, 1);
-            // then loop through everything else in the array
             for (let j = 0; j < boxes.length; j++) {
                 boxes[j].checked = false;
             }
-            // then add it back
             boxes.splice(i, 0, thisBox);
 
             if (index || index === 0) {
@@ -117,7 +113,6 @@ if (page.openEqSettings && !eqSettingsCheck) {
     console.log('Error: at least 1 of html elements eqcutbox, boostbox, mixbox, or closeeq is missing');
 }
 
-// TODO: have the confirm button greyed out and unclickable until something in textbox!!
 if (page.addUsernameButton) {
     page.addUsernameButton.addEventListener("click", function(event) {
         const username = page.usernameTextbox.value;
@@ -145,8 +140,6 @@ if (page.addUsernameButton) {
             }
         }
         if (!userExistsFlag) {
-            // const prevents reassigning the variable, not modifying the object it points to!
-            // aka const means "this variable always refers to the same object"
             const newUser = {
                 username: username,
                 active: true,
@@ -193,52 +186,9 @@ if (page.eqGameButton) {
         const newFreq = freqs[Math.floor(Math.random() * freqs.length)];
         gameFreqs.push(newFreq);
 
-        await ensureAudioReady();
+        generatePinkNoise(await ensureAudioReady, audioCtx, newFreq, page.eqBoostBox, 'pink-noise-processor');
 
-        const now = audioCtx.currentTime;
-        const duration = 2.0;
-        const fadeTime = 0.1;
-        const audioGain = 0.2;
-        const eqFreq = newFreq;
-        const eqQ = 2.5;
-        const sign = page.eqBoostBox.checked ? 1 : -1;
-        const eqGain = sign*6;
-        const pinkNoise = new AudioWorkletNode(audioCtx, 'pink-noise-processor');
-
-        const eqBand = audioCtx.createBiquadFilter();
-        eqBand.type = 'peaking';       
-        eqBand.frequency.value = eqFreq;   
-        eqBand.Q.value = eqQ;     
-        eqBand.gain.value = eqGain;   
-
-        const envelope = audioCtx.createGain();
-        envelope.gain.setValueAtTime(0, now);
-        envelope.gain.linearRampToValueAtTime(audioGain, now + fadeTime); // Quick fade in
-        envelope.gain.setValueAtTime(audioGain, now + duration - fadeTime); // Sustain
-        envelope.gain.linearRampToValueAtTime(0, now + duration); // Fade out
-
-        pinkNoise.connect(eqBand);
-        eqBand.connect(envelope);
-        envelope.connect(audioCtx.destination);
-
-        setTimeout(() => {
-            envelope.disconnect();
-            eqBand.disconnect();
-            pinkNoise.disconnect();
-        }, (duration + 0.05) * 1000);
     });
-}
-
-function roundCheck(round, score) {
-    if (round === score + 1) {
-        return true;
-    }
-    else if (round === score) {
-        return false;
-    }
-    else {
-        throw new Error(`Error: round and score number are out of sync. Round: ${round}. Score: ${score}.`);
-    }
 }
 
 if (page.lineContainer) {

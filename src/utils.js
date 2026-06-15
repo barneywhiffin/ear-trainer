@@ -34,6 +34,55 @@ export function getUserInfo() {
     return activeUser ? [savedUsers, index] : [null, null];
 }
 
+export function generatePinkNoise(awaitFunction, audioCtx, newFreq, htmlEqBoostBox, processorName) {
+
+    awaitFunction();
+
+    const now = audioCtx.currentTime;
+    const duration = 2.0;
+    const fadeTime = 0.1;
+    const audioGain = 0.2;
+    const eqFreq = newFreq;
+    const eqQ = 2.5;
+    const sign = htmlEqBoostBox.checked ? 1 : -1;
+    const eqGain = sign*6;
+    const pinkNoise = new AudioWorkletNode(audioCtx, processorName);
+
+    const eqBand = audioCtx.createBiquadFilter();
+    eqBand.type = 'peaking';       
+    eqBand.frequency.value = eqFreq;   
+    eqBand.Q.value = eqQ;     
+    eqBand.gain.value = eqGain;   
+
+    const envelope = audioCtx.createGain();
+    envelope.gain.setValueAtTime(0, now);
+    envelope.gain.linearRampToValueAtTime(audioGain, now + fadeTime); // Quick fade in
+    envelope.gain.setValueAtTime(audioGain, now + duration - fadeTime); // Sustain
+    envelope.gain.linearRampToValueAtTime(0, now + duration); // Fade out
+
+    pinkNoise.connect(eqBand);
+    eqBand.connect(envelope);
+    envelope.connect(audioCtx.destination);
+
+    setTimeout(() => {
+        envelope.disconnect();
+        eqBand.disconnect();
+        pinkNoise.disconnect();
+    }, (duration + 0.05) * 1000);
+}
+
+export function roundCheck(round, score) {
+    if (round === score + 1) {
+        return true;
+    }
+    else if (round === score) {
+        return false;
+    }
+    else {
+        throw new Error(`Error: round and score number are out of sync. Round: ${round}. Score: ${score}.`);
+    }
+}
+
 export function getToleranceFromRound(round) {
     const initTol = 2;
     const endTol = 1.1;
