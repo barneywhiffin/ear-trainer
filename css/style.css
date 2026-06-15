@@ -331,6 +331,19 @@ footer a {
     }
 }
 
+.eq-settings-slider-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.eq-settings-slider-sub-area {
+    display: flex;
+    gap: 5px;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background: #000000ed;
