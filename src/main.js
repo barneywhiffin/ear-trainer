@@ -94,29 +94,35 @@ if (eqSettingsCheck) {
         })
     }
 
-    // TODO: need to add writing logic here too !!
-
-    if (index || index === 0) {
-        const eqGainSetting = savedUsers[index].eqChoice;
-        if (eqGainSetting === 'boost') {
-            page.eqBoostBox.checked = true;
-        }
-        else if (eqGainSetting === 'cut') {
-            page.eqCutBox.checked = true;
-        }
-    }
-
-    page.eqGain6Box.checked = true;
     page.eqGain3Box.addEventListener('click', function(event) {
         this.checked = true;
         page.eqGain6Box.checked = false;
+        savedUsers[index].eqGain = "3dB";
+        localStorage.setItem('users', JSON.stringify(savedUsers));
     })
     page.eqGain6Box.addEventListener('click', function(event) {
         this.checked = true;
         page.eqGain3Box.checked = false;
+        savedUsers[index].eqGain = "6dB";
+        localStorage.setItem('users', JSON.stringify(savedUsers));
     })
 
-    // let gainBoxes = [page.eqGain6Box, page.eqGain3Box];
+    if (index || index === 0) {
+        const eqChoiceSetting = savedUsers[index].eqChoice;
+        if (eqChoiceSetting === 'boost') {
+            page.eqBoostBox.checked = true;
+        }
+        else if (eqChoiceSetting === 'cut') {
+            page.eqCutBox.checked = true;
+        }
+        const eqGainSetting = savedUsers[index].eqGain;
+        if (eqGainSetting === "6dB") {
+            page.eqGain6Box.checked = true;
+        }
+        else if (eqGainSetting === "3dB") {
+            page.eqGain3Box.checked = true;
+        }
+    }
 
     page.closeEqSettings.addEventListener("click", () => page.eqGameSettings.close());
 }
@@ -136,6 +142,7 @@ if (page.addUsernameButton) {
                 username: username,
                 active: true,
                 eqChoice: "boost",
+                eqGain: "6dB",
                 scores: [],
             }
             users.push(newUser);
@@ -156,6 +163,7 @@ if (page.addUsernameButton) {
                 username: username,
                 active: true,
                 eqChoice: "boost",
+                eqGain: "6dB",
                 scores: [],
             }
             savedUsers.push(newUser);
@@ -183,6 +191,7 @@ if (page.eqGameGoButton) {
         page.eqGameGoButton.disabled = false;
     }
     else {
+        // TODO: also disable settings button when no user...
         page.eqGoErrorText.textContent = "Please navigate to Account and create a username first";
     }
 
