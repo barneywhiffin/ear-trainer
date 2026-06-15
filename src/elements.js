@@ -22,6 +22,8 @@ export const eqGain6Box = document.getElementById("eq-gain-6db");
 export const eqGain3Box = document.getElementById("eq-gain-3db");
 export const eqGoErrorText = document.getElementById("eq-go-error-text");
 export const gameOverText = document.getElementById("game-over-text");
+export const eqDurationSlider = document.getElementById("eq-settings-slider");
+export const eqDurationDisplayText = document.getElementById("eq-duration-display");
 
 export const usernameTextbox = document.getElementById("username-textbox");
 export const addUsernameButton = document.getElementById("add-username-button");

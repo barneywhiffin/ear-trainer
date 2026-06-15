@@ -131,6 +131,24 @@ if (page.openEqSettings && !eqSettingsCheck) {
     console.log('Error: at least 1 of html elements eqcutbox, boostbox, mixbox, or closeeq is missing');
 }
 
+if (page.eqDurationSlider) {
+    // starting with change event, which only cares about last value
+    // for displaying live value on page, we need "input"
+    // can you have both at same time??
+    const linspace = (start, end, numVals) =>
+        Array.from({ length: numVals }, (_, i) =>
+            start + (i * (end - start)) / (numVals - 1)
+        );
+    const durationValues = linspace(1, 10, 101);
+    page.eqDurationSlider.addEventListener('input', function(event) {
+        const displayDuration = Number(durationValues[this.value].toFixed(2));
+        page.eqDurationDisplayText.textContent = displayDuration;
+    })
+    page.eqDurationSlider.addEventListener('change', function(event) {
+        console.log(this.value);
+    })
+}
+
 if (page.addUsernameButton) {
     page.addUsernameButton.addEventListener("click", function(event) {
         const username = page.usernameTextbox.value;
@@ -143,6 +161,7 @@ if (page.addUsernameButton) {
                 active: true,
                 eqChoice: "boost",
                 eqGain: "6dB",
+                duration: 2.0,
                 scores: [],
             }
             users.push(newUser);
@@ -164,6 +183,7 @@ if (page.addUsernameButton) {
                 active: true,
                 eqChoice: "boost",
                 eqGain: "6dB",
+                duration: 2.0,
                 scores: [],
             }
             savedUsers.push(newUser);
