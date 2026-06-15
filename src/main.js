@@ -182,6 +182,8 @@ if (page.eqGameButton) {
 
     page.eqGameButton.addEventListener('click', async() => {
 
+        page.gameOverText.textContent = "";
+
         page.guessFreqText.textContent = "";
         page.resultText.textContent = "";
         round += 1;
@@ -280,6 +282,8 @@ if (page.lineContainer) {
 
         page.line.style.display = "none";
 
+        audioCtx.suspend();
+
         if (guessFreq > floor && guessFreq < ceiling) {
             page.resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
             score += 1;
@@ -288,7 +292,7 @@ if (page.lineContainer) {
         }
         else {
             page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz.`;
-            // page.gameOverText.textContent = "Game Over";
+            page.gameOverText.textContent = "Game Over";
             let [savedUsers, index] = getUserInfo();
             savedUsers[index].scores.push(score);
             localStorage.setItem('users', JSON.stringify(savedUsers));

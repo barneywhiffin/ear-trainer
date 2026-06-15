@@ -199,6 +199,11 @@ section {
     /* width: 600px;
     height: 300px; */
     /* border: 1px solid #ccc; */
+    h2 {
+        color: white;
+        text-align: center;
+        line-height: 130px;
+    }
 }
 
 #line {
