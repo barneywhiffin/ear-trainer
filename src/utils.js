@@ -34,7 +34,7 @@ export function getUserInfo() {
     return activeUser ? [savedUsers, index] : [null, null];
 }
 
-export function generatePinkNoise(awaitFunction, audioCtx, newFreq, htmlEqBoostBox, processorName) {
+export function generatePinkNoise(awaitFunction, audioCtx, newFreq, htmlEqBoostBox, html6Box, processorName) {
 
     awaitFunction();
 
@@ -45,7 +45,7 @@ export function generatePinkNoise(awaitFunction, audioCtx, newFreq, htmlEqBoostB
     const eqFreq = newFreq;
     const eqQ = 2.5;
     const sign = htmlEqBoostBox.checked ? 1 : -1;
-    const eqGain = sign*6;
+    const eqGain = html6Box.checked ? sign*6 : sign*3;
     const pinkNoise = new AudioWorkletNode(audioCtx, processorName);
 
     const eqBand = audioCtx.createBiquadFilter();

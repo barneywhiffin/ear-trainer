@@ -105,7 +105,19 @@ if (eqSettingsCheck) {
             page.eqCutBox.checked = true;
         }
     }
-    
+
+    page.eqGain6Box.checked = true;
+    page.eqGain3Box.addEventListener('click', function(event) {
+        this.checked = true;
+        page.eqGain6Box.checked = false;
+    })
+    page.eqGain6Box.addEventListener('click', function(event) {
+        this.checked = true;
+        page.eqGain3Box.checked = false;
+    })
+
+    // let gainBoxes = [page.eqGain6Box, page.eqGain3Box];
+
     page.closeEqSettings.addEventListener("click", () => page.eqGameSettings.close());
 }
 
@@ -187,7 +199,8 @@ if (page.eqGameGoButton) {
         const newFreq = freqs[Math.floor(Math.random() * freqs.length)];
         gameFreqs.push(newFreq);
 
-        generatePinkNoise(await ensureAudioReady, audioCtx, newFreq, page.eqBoostBox, 'pink-noise-processor');
+        // TODO: fix ugly passing htmlelement just to do boosted/cut boolean
+        generatePinkNoise(await ensureAudioReady, audioCtx, newFreq, page.eqBoostBox, page.eqGain6Box, 'pink-noise-processor');
 
     });
 }
@@ -256,7 +269,7 @@ if (page.lineContainer) {
 
             page.eqGameReplayButton.disabled = false;
             page.eqGameReplayButton.addEventListener('click', async() => {
-                generatePinkNoise(await ensureAudioReady, audioCtx, gameFreqs.at(-1), page.eqBoostBox, 'pink-noise-processor');
+                generatePinkNoise(await ensureAudioReady, audioCtx, gameFreqs.at(-1), page.eqBoostBox, page.eqGain6Box, 'pink-noise-processor');
             })
         }
     });

@@ -18,6 +18,8 @@ export const closeEqSettings = document.getElementById("close-eq-settings");
 export const eqCutBox = document.getElementById("eq-cut-box");
 export const eqBoostBox = document.getElementById("eq-boost-box");
 export const eqMixBox = document.getElementById("eq-mix-box");
+export const eqGain6Box = document.getElementById("eq-gain-6db");
+export const eqGain3Box = document.getElementById("eq-gain-3db");
 export const eqGoErrorText = document.getElementById("eq-go-error-text");
 export const gameOverText = document.getElementById("game-over-text");
 
