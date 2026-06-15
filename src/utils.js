@@ -34,12 +34,11 @@ export function getUserInfo() {
     return activeUser ? [savedUsers, index] : [null, null];
 }
 
-export function generatePinkNoise(awaitFunction, audioCtx, newFreq, htmlEqBoostBox, html6Box, processorName) {
+export function generatePinkNoise(awaitFunction, audioCtx, newFreq, durationSetting, htmlEqBoostBox, html6Box, processorName) {
 
     awaitFunction();
 
     const now = audioCtx.currentTime;
-    const duration = 2.0;
     const fadeTime = 0.1;
     const audioGain = 0.2;
     const eqFreq = newFreq;
@@ -57,8 +56,8 @@ export function generatePinkNoise(awaitFunction, audioCtx, newFreq, htmlEqBoostB
     const envelope = audioCtx.createGain();
     envelope.gain.setValueAtTime(0, now);
     envelope.gain.linearRampToValueAtTime(audioGain, now + fadeTime); // Quick fade in
-    envelope.gain.setValueAtTime(audioGain, now + duration - fadeTime); // Sustain
-    envelope.gain.linearRampToValueAtTime(0, now + duration); // Fade out
+    envelope.gain.setValueAtTime(audioGain, now + durationSetting - fadeTime); // Sustain
+    envelope.gain.linearRampToValueAtTime(0, now + durationSetting); // Fade out
 
     pinkNoise.connect(eqBand);
     eqBand.connect(envelope);
@@ -68,7 +67,7 @@ export function generatePinkNoise(awaitFunction, audioCtx, newFreq, htmlEqBoostB
         envelope.disconnect();
         eqBand.disconnect();
         pinkNoise.disconnect();
-    }, (duration + 0.05) * 1000);
+    }, (durationSetting + 0.05) * 1000);
 }
 
 export function roundCheck(round, score) {

@@ -344,6 +344,10 @@ footer a {
     gap: 5px;
 }
 
+#eq-duration-display {
+    height: 20px;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background: #000000ed;

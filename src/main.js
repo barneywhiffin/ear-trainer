@@ -8,6 +8,8 @@ const audioCtx = new AudioContext();
 // and allow replay of sound after round (either way)
 // also allow space for next round!!!
 
+// TODO: work out how to save different score types depending on game setting
+
 const lowestFreq = 62.5;
 const highestFreq = 8000;
 const nFreqs = 5000;
@@ -132,6 +134,7 @@ if (page.openEqSettings && !eqSettingsCheck) {
 }
 
 if (page.eqDurationSlider) {
+    let [savedUsers, index] = getUserInfo();
     // starting with change event, which only cares about last value
     // for displaying live value on page, we need "input"
     // can you have both at same time??
@@ -140,12 +143,26 @@ if (page.eqDurationSlider) {
             start + (i * (end - start)) / (numVals - 1)
         );
     const durationValues = linspace(1, 10, 101);
+
+    if (index || index === 0) {
+        const readDuration = savedUsers[index].duration;
+        console.log(readDuration);
+        const mapTo0 = readDuration - 1;
+        const writeSlider = mapTo0*10;
+        page.eqDurationSlider.value = writeSlider;
+        const displayDuration = Number(readDuration.toFixed(2));
+        page.eqDurationDisplayText.textContent = displayDuration;;
+    }
+
     page.eqDurationSlider.addEventListener('input', function(event) {
         const displayDuration = Number(durationValues[this.value].toFixed(2));
         page.eqDurationDisplayText.textContent = displayDuration;
     })
     page.eqDurationSlider.addEventListener('change', function(event) {
-        console.log(this.value);
+        let [savedUsers, index] = getUserInfo();
+        const storeDuration = Number(durationValues[this.value].toFixed(2))
+        savedUsers[index].duration = storeDuration;
+        localStorage.setItem('users', JSON.stringify(savedUsers));
     })
 }
 
@@ -169,6 +186,8 @@ if (page.addUsernameButton) {
         }
 
         // probably jank af workaround but it is doing the job
+        // TODO: we saw console error here about savedUsers did not have length when it was called here
+        // i believe this is the root of the click achieving nothing problem
         let userExistsFlag = false;
         for (let i = 0; i < savedUsers.length; i++) {
             savedUsers[i].active = false;
@@ -217,6 +236,8 @@ if (page.eqGameGoButton) {
 
     page.eqGameGoButton.addEventListener('click', async() => {
 
+        let [savedUsers, index] = getUserInfo();
+
         page.gameOverText.textContent = "";
 
         page.guessFreqText.textContent = "";
@@ -228,8 +249,10 @@ if (page.eqGameGoButton) {
         const newFreq = freqs[Math.floor(Math.random() * freqs.length)];
         gameFreqs.push(newFreq);
 
+        const durationSetting = savedUsers[index].duration;
+
         // TODO: fix ugly passing htmlelement just to do boosted/cut boolean
-        generatePinkNoise(await ensureAudioReady, audioCtx, newFreq, page.eqBoostBox, page.eqGain6Box, 'pink-noise-processor');
+        generatePinkNoise(await ensureAudioReady, audioCtx, newFreq, durationSetting, page.eqBoostBox, page.eqGain6Box, 'pink-noise-processor');
 
     });
 }
@@ -288,6 +311,7 @@ if (page.lineContainer) {
             page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz.`;
             page.gameOverText.textContent = "Game Over";
             let [savedUsers, index] = getUserInfo();
+            const durationSetting = savedUsers[index].duration;
             savedUsers[index].scores.push(score);
             localStorage.setItem('users', JSON.stringify(savedUsers));
             page.scoreText.textContent = "";
@@ -298,7 +322,7 @@ if (page.lineContainer) {
 
             page.eqGameReplayButton.disabled = false;
             page.eqGameReplayButton.addEventListener('click', async() => {
-                generatePinkNoise(await ensureAudioReady, audioCtx, gameFreqs.at(-1), page.eqBoostBox, page.eqGain6Box, 'pink-noise-processor');
+                generatePinkNoise(await ensureAudioReady, audioCtx, gameFreqs.at(-1), durationSetting, page.eqBoostBox, page.eqGain6Box, 'pink-noise-processor');
             })
         }
     });
