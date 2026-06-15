@@ -1,4 +1,4 @@
-import {maxIndex, geometricArray, getUserInfo, changeBackgroundColor} from "./utils.js";
+import {maxIndex, geometricArray, getUserInfo, getToleranceFromRound, changeBackgroundColor} from "./utils.js";
 import * as page from "./elements.js";
 
 const audioCtx = new AudioContext();
@@ -36,7 +36,6 @@ window.addEventListener('load', async () => {
         let topScoreIndex = maxIndex(allScores);
         page.scoresDisplayLeft1.textContent = allUsers[topScoreIndex]; 
         page.scoresDisplayRight1.textContent = allScores[topScoreIndex]; 
-        // .splice lets us remove the value at a certain index
         allUsers.splice(topScoreIndex, 1);  
         allScores.splice(topScoreIndex, 1); 
         
@@ -49,8 +48,6 @@ window.addEventListener('load', async () => {
         topScoreIndex = maxIndex(allScores);
         page.scoresDisplayLeft3.textContent = allUsers[topScoreIndex]; 
         page.scoresDisplayRight3.textContent = allScores[topScoreIndex];  
-
-        // crucially note that nowhere here is the modified data pushed back to local storage
     }
     await audioCtx.audioWorklet.addModule('../src/pink-noise.js');
 });
@@ -61,7 +58,6 @@ async function ensureAudioReady() {
     }
 }
 
-// eq game popup windows
 if (page.openEqHowto) {
     page.openEqHowto.addEventListener("click", () => page.eqGameHowto.showModal());
     page.closeEqHowto.addEventListener("click", () => page.eqGameHowto.close());
@@ -79,10 +75,14 @@ if (eqSettingsCheck) {
         const thisBox = boxes[i];
         thisBox.addEventListener("click", function(event) {
             this.checked = true;
+            // simplest way to tick all others false
+            // is to remove the current one from the array
             boxes.splice(i, 1);
+            // then loop through everything else in the array
             for (let j = 0; j < boxes.length; j++) {
                 boxes[j].checked = false;
             }
+            // then add it back
             boxes.splice(i, 0, thisBox);
 
             if (index || index === 0) {
@@ -117,9 +117,7 @@ if (page.openEqSettings && !eqSettingsCheck) {
     console.log('Error: at least 1 of html elements eqcutbox, boostbox, mixbox, or closeeq is missing');
 }
 
-// TODO: eventually upgrade into a user class with scores
-
-// most ideally, have the confirm button greyed out and unclickable until something in textbox!!
+// TODO: have the confirm button greyed out and unclickable until something in textbox!!
 if (page.addUsernameButton) {
     page.addUsernameButton.addEventListener("click", function(event) {
         const username = page.usernameTextbox.value;
@@ -183,78 +181,67 @@ if (page.eqGameButton) {
     }
 
     page.eqGameButton.addEventListener('click', async() => {
-        if (round > clicks) {
-            // lineContainer.style.border = "2px solid red";
-            // setTimeout(() => {
-            //     lineContainer.style.border = "none";
-            // }, 1000);
-            alert("are you thick mate or what. how about make a frequency guess first then we'll see about the next round yeah?");
 
-            // TODO: replace alerts with custom css popups as this won't work with androidddd
-        }
-        else {
-            // set / reset things
+        page.guessFreqText.textContent = "";
+        page.resultText.textContent = "";
+        round += 1;
 
-            page.guessFreqText.textContent = "";
-            page.resultText.textContent = "";
+        page.eqGameButton.disabled = true;
 
-            round += 1;
+        const newFreq = freqs[Math.floor(Math.random() * freqs.length)];
+        gameFreqs.push(newFreq);
 
-            const newFreq = freqs[Math.floor(Math.random() * freqs.length)];
+        await ensureAudioReady();
 
-            gameFreqs.push(newFreq);
+        const now = audioCtx.currentTime;
+        const duration = 2.0;
+        const fadeTime = 0.1;
+        const audioGain = 0.2;
+        const eqFreq = newFreq;
+        const eqQ = 2.5;
+        const sign = page.eqBoostBox.checked ? 1 : -1;
+        const eqGain = sign*6;
+        const pinkNoise = new AudioWorkletNode(audioCtx, 'pink-noise-processor');
 
-            // actually make the sound happen
+        const eqBand = audioCtx.createBiquadFilter();
+        eqBand.type = 'peaking';       
+        eqBand.frequency.value = eqFreq;   
+        eqBand.Q.value = eqQ;     
+        eqBand.gain.value = eqGain;   
 
-            await ensureAudioReady();
+        const envelope = audioCtx.createGain();
+        envelope.gain.setValueAtTime(0, now);
+        envelope.gain.linearRampToValueAtTime(audioGain, now + fadeTime); // Quick fade in
+        envelope.gain.setValueAtTime(audioGain, now + duration - fadeTime); // Sustain
+        envelope.gain.linearRampToValueAtTime(0, now + duration); // Fade out
 
-            const now = audioCtx.currentTime;
-            const duration = 2.0;
-            const fadeTime = 0.1;
-            const audioGain = 0.2;
-            const eqFreq = newFreq;
-            const eqQ = 2.5;
-            const sign = page.eqBoostBox.checked ? 1 : -1;
-            const eqGain = sign*6;
+        pinkNoise.connect(eqBand);
+        eqBand.connect(envelope);
+        envelope.connect(audioCtx.destination);
 
-            const pinkNoise = new AudioWorkletNode(audioCtx, 'pink-noise-processor');
-            const envelope = audioCtx.createGain();
-
-            const eqBand = audioCtx.createBiquadFilter();
-            eqBand.type = 'peaking';       
-            eqBand.frequency.value = eqFreq;   
-            eqBand.Q.value = eqQ;     
-            eqBand.gain.value = eqGain;   
-
-            envelope.gain.setValueAtTime(0, now);
-            envelope.gain.linearRampToValueAtTime(audioGain, now + fadeTime); // Quick fade in
-            envelope.gain.setValueAtTime(audioGain, now + duration - fadeTime); // Sustain
-            envelope.gain.linearRampToValueAtTime(0, now + duration); // Fade out
-
-            pinkNoise.connect(eqBand);
-            eqBand.connect(envelope);
-            envelope.connect(audioCtx.destination);
-
-            setTimeout(() => {
-                envelope.disconnect();
-                eqBand.disconnect();
-                pinkNoise.disconnect();
-            }, (duration + 0.05) * 1000);
-        }
+        setTimeout(() => {
+            envelope.disconnect();
+            eqBand.disconnect();
+            pinkNoise.disconnect();
+        }, (duration + 0.05) * 1000);
     });
 }
 
-function getToleranceFromRound(round) {
-    const initTol = 2;
-    const endTol = 1.1;
-    const arr = geometricArray(initTol, endTol, 20);
-    // inverse square law to start with?
-    const tol = round > 20 ? endTol : arr[round-1];
-    return tol;
+function roundCheck(round, score) {
+    if (round === score + 1) {
+        return true;
+    }
+    else if (round === score) {
+        return false;
+    }
+    else {
+        throw new Error(`Error: round and score number are out of sync. Round: ${round}. Score: ${score}.`);
+    }
 }
 
 if (page.lineContainer) {
     page.lineContainer.addEventListener("mousemove", (e) => {
+        if (!roundCheck(round, score)) return;
         const rect = page.lineContainer.getBoundingClientRect();
         const x = e.clientX - rect.left;
 
@@ -262,57 +249,53 @@ if (page.lineContainer) {
     });
 
     page.lineContainer.addEventListener("mouseenter", () => {
+        if (!roundCheck(round, score)) return;
         page.line.style.display = "block";
     });
 
     page.lineContainer.addEventListener("mouseleave", () => {
+        if (!roundCheck(round, score)) return;
         page.line.style.display = "none";
     });
 
-    // add start/next round button to generate numbers
+    // TODO: add start/next round button to generate numbers
+    // TODO: allow sound replay
 
     page.lineContainer.addEventListener('click', function(event) {
-      
-        if (clicks == round) {
-            // eqGameButton.style.background = "red";
-            // setTimeout(() => {
-            //     eqGameButton.style.background = "initial";
-            // }, 1000);
-            alert('are you thick mate or what. how about press go first??');
+        if (!roundCheck(round, score)) return;
+
+        clicks += 1;
+
+        const tol = getToleranceFromRound(round);
+        const floor = gameFreqs.at(-1)/tol;
+        const ceiling = gameFreqs.at(-1)*tol;
+
+        // fetch current width of container (const as new function each click)
+        const boxWidth = page.lineContainer.offsetWidth;
+        const mouseLocation = Math.round(nFreqs*event.offsetX/boxWidth);
+
+        const guessFreq = Math.round(freqs[mouseLocation]);
+        page.guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
+        const displayAnswer = Math.round(gameFreqs.at(-1));
+
+        page.line.style.display = "none";
+
+        if (guessFreq > floor && guessFreq < ceiling) {
+            page.resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
+            score += 1;
+            page.scoreText.textContent = `Score: ${score}`;
+            page.eqGameButton.disabled = false;
         }
-
         else {
-            clicks += 1;
-
-            const tol = getToleranceFromRound(round);
-            const floor = gameFreqs.at(-1)/tol;
-            const ceiling = gameFreqs.at(-1)*tol;
-
-            // fetch current width of container (const as new function each click)
-            const boxWidth = page.lineContainer.offsetWidth;
-            const mouseLocation = Math.round(nFreqs*event.offsetX/boxWidth);
-
-            const guessFreq = Math.round(freqs[mouseLocation]);
-            page.guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
-            const displayAnswer = Math.round(gameFreqs.at(-1));
-
-            if (guessFreq > floor && guessFreq < ceiling) {
-                page.resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
-                score += 1;
-                page.scoreText.textContent = `Score: ${score}`;
-            }
-            else {
-                page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz`;
-        
-                let [savedUsers, index] = getUserInfo();
-                // console.log(savedUsers);
-                savedUsers[index].scores.push(score);
-                localStorage.setItem('users', JSON.stringify(savedUsers));
-                page.scoreText.textContent = "";
-                round = 0;
-                score = 0;
-            }
-            
+            page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz.`;
+            // page.gameOverText.textContent = "Game Over";
+            let [savedUsers, index] = getUserInfo();
+            savedUsers[index].scores.push(score);
+            localStorage.setItem('users', JSON.stringify(savedUsers));
+            page.scoreText.textContent = "";
+            round = 0;
+            score = 0;
+            page.eqGameButton.disabled = false;
         }
     });
 }

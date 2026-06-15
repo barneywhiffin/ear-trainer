@@ -34,6 +34,14 @@ export function getUserInfo() {
     return activeUser ? [savedUsers, index] : [null, null];
 }
 
+export function getToleranceFromRound(round) {
+    const initTol = 2;
+    const endTol = 1.1;
+    const arr = geometricArray(initTol, endTol, 20);
+    const tol = round > 20 ? endTol : arr[round-1];
+    return tol;
+}
+
 export function changeBackgroundColor() {
     // generate a random hex color (e.g., #3498db)
     const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
