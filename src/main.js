@@ -143,7 +143,7 @@ if (page.eqDurationSlider) {
     if (index || index === 0) {
         const readDuration = savedUsers[index].duration;
         const mapTo0 = readDuration - shortestTime;
-        const writeSlider = mapTo0*100/longestTime;
+        const writeSlider = mapTo0*100/(longestTime-shortestTime);
         page.eqDurationSlider.value = writeSlider;
         const displayDuration = (readDuration).toFixed(2);
         page.eqDurationDisplayText.textContent = displayDuration;;
