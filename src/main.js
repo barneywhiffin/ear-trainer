@@ -276,7 +276,8 @@ if (page.lineContainer) {
         if (!roundCheck(round, score)) return;
 
         const answer = gameFreqs.at(-1);
-        const tol = getToleranceFromRound(round);
+        const tol = getToleranceFromRound(2, 1.2, 10, round);
+        console.log(tol);
         const floor = answer/tol;
         const ceiling = answer*tol;
 

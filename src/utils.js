@@ -92,11 +92,9 @@ export function roundCheck(round, score) {
     }
 }
 
-export function getToleranceFromRound(round) {
-    const initTol = 2;
-    const endTol = 1.1;
-    const arr = geometricArray(initTol, endTol, 20);
-    const tol = round > 20 ? endTol : arr[round-1];
+export function getToleranceFromRound(initTol, endTol, nRounds, round) {
+    const arr = geometricArray(initTol, endTol, nRounds);
+    const tol = round > nRounds ? endTol : arr[round-1];
     return tol;
 }
 
