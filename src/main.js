@@ -3,11 +3,6 @@ import * as page from "./elements.js";
 
 const audioCtx = new AudioContext();
 
-// TODO: stop audio playing when guess is made
-// should actually be continuous up to this point imo
-// and allow replay of sound after round (either way)
-// also allow space for next round!!!
-
 // TODO: work out how to save different score types depending on game setting
 
 const lowestFreq = 62.5;
@@ -275,10 +270,6 @@ if (page.lineContainer) {
         if (!roundCheck(round, score)) return;
         page.line.style.display = "none";
     });
-
-    // TODO: add start/next round button to generate numbers
-    // TODO: allow sound replay
-    // TODO: allow modification of default audio length. slider. user saved
 
     page.lineContainer.addEventListener('click', function(event) {
         if (!roundCheck(round, score)) return;

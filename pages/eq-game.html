@@ -39,10 +39,6 @@
 </header>
 
 <main class="container">
-    <!-- <div>
-        <p>Username:</p>
-        <p id="username-display"></p>
-    </div> -->
     
     <div class="main-in-two">
         <div class="page-title">
@@ -58,7 +54,6 @@
                 <p id="score-text"></p>
             </div>
             <div class="eq-game-box">
-                <!-- <p>imagine this is a cool looking graph</p> -->
                 <div id="line-container">
                     <div id="line"></div>
                     <h2 id="game-over-text"></h2>
@@ -78,7 +73,6 @@
                 <p id="guess-freq"></p>
                 <p id="result"></p>
             </div>
-            <!-- TODO:  replace with play and pause buttons -->
             <div class="eq-game-buttons">
                 <button id="eq-game-go-button" disabled></button>
                 <button id="eq-game-replay-button" disabled>Replay Sound</button>
@@ -131,28 +125,14 @@
   <div class="eq-settings-slider-area">
     <p style="font-size: large; text-align: center; margin-top: 10px;">Sound Duration</p>
     <div class="eq-settings-slider-sub-area">
-        <!-- <p>1s</p> -->
         <input id="eq-settings-slider" type="range">
-        <!-- <p>10s</p> -->
     </div>
     <div style="display: flex;">
         <p id="eq-duration-display"></p>
         <p>s</p>
     </div>
-
-
   </div>
-
   <hr>
-
-    <!-- <div class="gain-select">
-        <label id="gain-label">Select Gain:</label>
-        <select name="gain" id="gain-select">
-            <option value="1">1dB</option>
-            <option value="2">2dB</option>
-            <option value="3">3dB</option>
-        </select>
-    </div> -->
   
   <button id="close-eq-settings">Close</button>
 </dialog>
