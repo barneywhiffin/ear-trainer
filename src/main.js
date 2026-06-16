@@ -134,23 +134,23 @@ if (page.openEqSettings && !eqSettingsCheck) {
 }
 
 if (page.eqDurationSlider) {
+    // TODO: make it a stepped slider, always using the 0.5 values?
+    // this would probably mean reworking how we fill the values...
     let [savedUsers, index] = getUserInfo();
-    // starting with change event, which only cares about last value
-    // for displaying live value on page, we need "input"
-    // can you have both at same time??
+    const shortestTime = 0.5;
+    const longestTime = 5;
     const linspace = (start, end, numVals) =>
         Array.from({ length: numVals }, (_, i) =>
             start + (i * (end - start)) / (numVals - 1)
         );
-    const durationValues = linspace(1, 10, 101);
+    const durationValues = linspace(shortestTime, longestTime, 101);
 
     if (index || index === 0) {
         const readDuration = savedUsers[index].duration;
-        console.log(readDuration);
-        const mapTo0 = readDuration - 1;
-        const writeSlider = mapTo0*10;
+        const mapTo0 = readDuration - shortestTime;
+        const writeSlider = mapTo0*100/longestTime;
         page.eqDurationSlider.value = writeSlider;
-        const displayDuration = Number(readDuration.toFixed(2));
+        const displayDuration = (readDuration).toFixed(2);
         page.eqDurationDisplayText.textContent = displayDuration;;
     }
 

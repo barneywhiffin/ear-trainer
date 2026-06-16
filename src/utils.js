@@ -38,6 +38,8 @@ export function generatePinkNoise(awaitFunction, audioCtx, newFreq, durationSett
 
     awaitFunction();
 
+    console.log(durationSetting);
+
     const now = audioCtx.currentTime;
     const fadeTime = 0.1;
     const audioGain = 0.2;
