@@ -210,6 +210,45 @@ section {
     /* hides line on page load */
 }
 
+#answer-line {
+    position: absolute;
+    top: 20px;
+    width: 2px;
+    height: 80%;
+    background: blue;
+    pointer-events: none; 
+    margin-left: 0px;
+    /* prevents the line from blocking mouse events */
+    display: none;
+    /* hides line on page load */
+}
+
+#floor-line {
+    position: absolute;
+    top: 20px;
+    width: 2px;
+    height: 80%;
+    background: white;
+    pointer-events: none; 
+    margin-left: 0px;
+    /* prevents the line from blocking mouse events */
+    display: none;
+    /* hides line on page load */
+}
+
+#ceiling-line {
+    position: absolute;
+    top: 20px;
+    width: 2px;
+    height: 80%;
+    background: white;
+    pointer-events: none; 
+    margin-left: 0px;
+    /* prevents the line from blocking mouse events */
+    display: none;
+    /* hides line on page load */
+}
+
 .eq-game-buttons {
     display: flex;
     gap: 10px;

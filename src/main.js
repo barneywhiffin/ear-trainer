@@ -1,4 +1,4 @@
-import {maxIndex, geometricArray, getUserInfo, generatePinkNoise, getToleranceFromRound, roundCheck, changeBackgroundColor} from "./utils.js";
+import {maxIndex, adjIndex, geometricArray, getUserInfo, generatePinkNoise, getToleranceFromRound, roundCheck, changeBackgroundColor} from "./utils.js";
 import * as page from "./elements.js";
 
 const audioCtx = new AudioContext();
@@ -216,7 +216,6 @@ if (page.myButton) {
 
 let round = 0;
 let score = 0;
-let clicks = 0;
 let gameFreqs = [];
 
 if (page.eqGameGoButton) {
@@ -234,9 +233,11 @@ if (page.eqGameGoButton) {
         let [savedUsers, index] = getUserInfo();
 
         page.gameOverText.textContent = "";
-
         page.guessFreqText.textContent = "";
         page.resultText.textContent = "";
+        page.answerLine.style.display = "none";
+        page.floorLine.style.display = "none";
+        page.ceilingLine.style.display = "none";
         round += 1;
         page.eqGameGoButton.textContent = "Next Round";
         page.eqGameGoButton.disabled = true;
@@ -274,20 +275,36 @@ if (page.lineContainer) {
     page.lineContainer.addEventListener('click', function(event) {
         if (!roundCheck(round, score)) return;
 
-        clicks += 1;
-
+        const answer = gameFreqs.at(-1);
         const tol = getToleranceFromRound(round);
-        const floor = gameFreqs.at(-1)/tol;
-        const ceiling = gameFreqs.at(-1)*tol;
+        const floor = answer/tol;
+        const ceiling = answer*tol;
 
         // fetch current width of container (const as new function each click)
-        const boxWidth = page.lineContainer.offsetWidth;
+        const boxWidth = this.offsetWidth;
         const mouseLocation = Math.round(nFreqs*event.offsetX/boxWidth);
 
         const guessFreq = Math.round(freqs[mouseLocation]);
         page.guessFreqText.textContent = `Answer guessed: ${guessFreq}Hz`;
-        const displayAnswer = Math.round(gameFreqs.at(-1));
+        
+        const displayAnswer = Math.round(answer);
 
+        const guessFloor = guessFreq/tol;
+        const guessCeiling = guessFreq*tol;
+
+        const answerAsFreqIdx = adjIndex(answer, freqs);
+        const answerAsPixels = boxWidth*(answerAsFreqIdx/nFreqs);
+        const floorAsFreqIdx = adjIndex(guessFloor, freqs);
+        const floorAsPixels = boxWidth*(floorAsFreqIdx/nFreqs);
+        const ceilingAsFreqIdx = adjIndex(guessCeiling, freqs);
+        const ceilingAsPixels = boxWidth*(ceilingAsFreqIdx/nFreqs);
+        
+        page.answerLine.style.marginLeft = `${answerAsPixels}px`;
+        page.answerLine.style.display = "block";
+        page.floorLine.style.marginLeft = `${floorAsPixels}px`;
+        page.floorLine.style.display = "block";
+        page.ceilingLine.style.marginLeft = `${ceilingAsPixels}px`;
+        page.ceilingLine.style.display = "block";
         page.line.style.display = "none";
 
         audioCtx.suspend();
@@ -300,7 +317,7 @@ if (page.lineContainer) {
         }
         else {
             page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz.`;
-            page.gameOverText.textContent = "Game Over";
+            // page.gameOverText.textContent = "Game Over";
             let [savedUsers, index] = getUserInfo();
             const durationSetting = savedUsers[index].duration;
             savedUsers[index].scores.push(score);

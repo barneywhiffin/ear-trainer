@@ -10,6 +10,16 @@ export function maxIndex(arr) {
     return idx;
 }
 
+export function adjIndex(val, arr) {
+    let idx = 0;
+    for (let i = 1; i < arr.length; i++) {
+        if (Math.abs(arr[i] - val) < Math.abs(arr[idx] - val)) {
+            idx = i;
+        }
+    }
+    return idx;
+}
+
 export function geometricArray(start, end, n) {
     const ratio = Math.pow(end / start, 1 / (n - 1));
     const arr = [];
@@ -37,8 +47,6 @@ export function getUserInfo() {
 export function generatePinkNoise(awaitFunction, audioCtx, newFreq, durationSetting, htmlEqBoostBox, html6Box, processorName) {
 
     awaitFunction();
-
-    console.log(durationSetting);
 
     const now = audioCtx.currentTime;
     const fadeTime = 0.1;

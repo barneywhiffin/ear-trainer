@@ -2,6 +2,9 @@ export const myButton = document.getElementById('color-btn');
 export const myBody = document.body;
 export const lineContainer = document.getElementById("line-container");
 export const line = document.getElementById("line");
+export const answerLine = document.getElementById("answer-line");
+export const floorLine = document.getElementById("floor-line");
+export const ceilingLine = document.getElementById("ceiling-line");
 export const eqGameGoButton = document.getElementById("eq-game-go-button");
 export const eqGameReplayButton = document.getElementById("eq-game-replay-button");
 
