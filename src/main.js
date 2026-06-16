@@ -300,7 +300,6 @@ if (page.lineContainer) {
         const ceilingAsPixels = boxWidth*(ceilingAsFreqIdx/nFreqs);
         
         page.answerLine.style.marginLeft = `${answerAsPixels}px`;
-        page.answerLine.style.display = "block";
         page.floorLine.style.marginLeft = `${floorAsPixels}px`;
         page.floorLine.style.display = "block";
         page.ceilingLine.style.marginLeft = `${ceilingAsPixels}px`;
@@ -310,6 +309,8 @@ if (page.lineContainer) {
         audioCtx.suspend();
 
         if (guessFreq > floor && guessFreq < ceiling) {
+            page.answerLine.style.background = "green";
+            page.answerLine.style.display = "block";
             page.resultText.textContent = `Correct! it was ${displayAnswer}Hz`;
             score += 1;
             page.scoreText.textContent = `Score: ${score}`;
@@ -317,6 +318,8 @@ if (page.lineContainer) {
         }
         else {
             page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz.`;
+            page.answerLine.style.background = "red";
+            page.answerLine.style.display = "block";
             // page.gameOverText.textContent = "Game Over";
             let [savedUsers, index] = getUserInfo();
             const durationSetting = savedUsers[index].duration;

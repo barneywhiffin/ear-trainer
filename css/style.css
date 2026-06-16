@@ -175,7 +175,7 @@ section {
     width: 80%;
     margin: 10px 0;
     max-width: 800px;
-    background: #033a21;
+    background: #29322e;
     display: grid;
     grid-template-rows: 1fr auto;
     ul {
@@ -207,20 +207,18 @@ section {
     pointer-events: none; 
     /* prevents the line from blocking mouse events */
     display: none;
-    /* hides line on page load */
 }
+
+/* TODO: check if can replace margin-left with left, in both this and js, given that we are using position absolute */
 
 #answer-line {
     position: absolute;
     top: 20px;
-    width: 2px;
+    width: 3px;
     height: 80%;
     background: blue;
-    pointer-events: none; 
     margin-left: 0px;
-    /* prevents the line from blocking mouse events */
     display: none;
-    /* hides line on page load */
 }
 
 #floor-line {
@@ -229,11 +227,8 @@ section {
     width: 2px;
     height: 80%;
     background: white;
-    pointer-events: none; 
     margin-left: 0px;
-    /* prevents the line from blocking mouse events */
     display: none;
-    /* hides line on page load */
 }
 
 #ceiling-line {
@@ -242,11 +237,8 @@ section {
     width: 2px;
     height: 80%;
     background: white;
-    pointer-events: none; 
     margin-left: 0px;
-    /* prevents the line from blocking mouse events */
     display: none;
-    /* hides line on page load */
 }
 
 .eq-game-buttons {
