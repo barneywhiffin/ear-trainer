@@ -175,7 +175,7 @@ section {
     width: 80%;
     margin: 10px 0;
     max-width: 800px;
-    background: #29322e;
+    background: #75827c;
     display: grid;
     grid-template-rows: 1fr auto;
     ul {
@@ -387,5 +387,8 @@ footer a {
   dialog {
     background: black;
     color: white;
+  }
+  .eq-game-box {
+    background: #29322e;
   }
 }
