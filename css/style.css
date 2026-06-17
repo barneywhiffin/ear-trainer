@@ -209,8 +209,6 @@ section {
     display: none;
 }
 
-/* TODO: check if can replace margin-left with left, in both this and js, given that we are using position absolute */
-
 #answer-line {
     position: absolute;
     top: 20px;

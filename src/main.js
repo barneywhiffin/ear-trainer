@@ -10,42 +10,7 @@ const highestFreq = 8000;
 const nFreqs = 5000;
 const freqs = geometricArray(lowestFreq, highestFreq, nFreqs);
 
-// TODO: only bother running on specific audio related pages
 window.addEventListener('load', async () => {
-    if (page.usernameDisplay) {
-        const [savedUsers, index] =  getUserInfo();
-        if (index || index === 0) {
-            const savedUsername = savedUsers[index].username;
-            page.usernameDisplay.textContent = `Username: ${savedUsername}`; 
-        }
-    }
-    if (page.scoresDisplayLeft1) {
-        let [savedUsers, index] = getUserInfo();
-        let allUsers = [];
-        let allScores = [];
-        for (let i = 0; i < savedUsers.length; i++) {
-            for (let j = 0; j < savedUsers[i].scores.length; j++) {
-                allUsers.push(savedUsers[i].username);
-                allScores.push(savedUsers[i].scores[j]);
-            }
-        }
-
-        let topScoreIndex = maxIndex(allScores);
-        page.scoresDisplayLeft1.textContent = allUsers[topScoreIndex]; 
-        page.scoresDisplayRight1.textContent = allScores[topScoreIndex]; 
-        allUsers.splice(topScoreIndex, 1);  
-        allScores.splice(topScoreIndex, 1); 
-        
-        topScoreIndex = maxIndex(allScores);
-        page.scoresDisplayLeft2.textContent = allUsers[topScoreIndex]; 
-        page.scoresDisplayRight2.textContent = allScores[topScoreIndex]; 
-        allUsers.splice(topScoreIndex, 1);  
-        allScores.splice(topScoreIndex, 1);
-
-        topScoreIndex = maxIndex(allScores);
-        page.scoresDisplayLeft3.textContent = allUsers[topScoreIndex]; 
-        page.scoresDisplayRight3.textContent = allScores[topScoreIndex];  
-    }
     await audioCtx.audioWorklet.addModule('../src/pink-noise.js');
 });
 
@@ -53,6 +18,41 @@ async function ensureAudioReady() {
     if (audioCtx.state === 'suspended') {
         await audioCtx.resume();
     }
+}
+
+if (page.usernameDisplay) {
+    const [savedUsers, index] =  getUserInfo();
+    if (index || index === 0) {
+        const savedUsername = savedUsers[index].username;
+        page.usernameDisplay.textContent = `Username: ${savedUsername}`; 
+    }
+}
+if (page.scoresDisplayLeft1) {
+    let [savedUsers, index] = getUserInfo();
+    let allUsers = [];
+    let allScores = [];
+    for (let i = 0; i < savedUsers.length; i++) {
+        for (let j = 0; j < savedUsers[i].scores.length; j++) {
+            allUsers.push(savedUsers[i].username);
+            allScores.push(savedUsers[i].scores[j]);
+        }
+    }
+
+    let topScoreIndex = maxIndex(allScores);
+    page.scoresDisplayLeft1.textContent = allUsers[topScoreIndex]; 
+    page.scoresDisplayRight1.textContent = allScores[topScoreIndex]; 
+    allUsers.splice(topScoreIndex, 1);  
+    allScores.splice(topScoreIndex, 1); 
+    
+    topScoreIndex = maxIndex(allScores);
+    page.scoresDisplayLeft2.textContent = allUsers[topScoreIndex]; 
+    page.scoresDisplayRight2.textContent = allScores[topScoreIndex]; 
+    allUsers.splice(topScoreIndex, 1);  
+    allScores.splice(topScoreIndex, 1);
+
+    topScoreIndex = maxIndex(allScores);
+    page.scoresDisplayLeft3.textContent = allUsers[topScoreIndex]; 
+    page.scoresDisplayRight3.textContent = allScores[topScoreIndex];  
 }
 
 if (page.openEqHowto) {
@@ -180,28 +180,28 @@ if (page.addUsernameButton) {
             localStorage.setItem('users', JSON.stringify(users));
         }
 
-        // probably jank af workaround but it is doing the job
-        // TODO: we saw console error here about savedUsers did not have length when it was called here
-        // i believe this is the root of the click achieving nothing problem
-        let userExistsFlag = false;
-        for (let i = 0; i < savedUsers.length; i++) {
-            savedUsers[i].active = false;
-            if (username === savedUsers[i].username) {
-                savedUsers[i].active = true;
-                userExistsFlag = true;
+        else {
+            let userExistsFlag = false;
+            for (let i = 0; i < savedUsers.length; i++) {
+                savedUsers[i].active = false;
+                if (username === savedUsers[i].username) {
+                    savedUsers[i].active = true;
+                    userExistsFlag = true;
+                }
+            }
+            if (!userExistsFlag) {
+                const newUser = {
+                    username: username,
+                    active: true,
+                    eqChoice: "boost",
+                    eqGain: "6dB",
+                    duration: 2.0,
+                    scores: [],
+                }
+                savedUsers.push(newUser);
             }
         }
-        if (!userExistsFlag) {
-            const newUser = {
-                username: username,
-                active: true,
-                eqChoice: "boost",
-                eqGain: "6dB",
-                duration: 2.0,
-                scores: [],
-            }
-            savedUsers.push(newUser);
-        }
+
         localStorage.setItem('users', JSON.stringify(savedUsers));
         page.usernameTextbox.value = "";
         if (page.usernameDisplay) {
