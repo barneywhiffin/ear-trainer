@@ -9,6 +9,10 @@ const lowestFreq = 62.5;
 const highestFreq = 8000;
 const nFreqs = 5000;
 const freqs = geometricArray(lowestFreq, highestFreq, nFreqs);
+let round = 0;
+let score = 0;
+let gameFreqs = [];
+let activeSound = null;
 
 window.addEventListener('load', async () => {
     await audioCtx.audioWorklet.addModule('../src/pink-noise.js');
@@ -17,6 +21,14 @@ window.addEventListener('load', async () => {
 async function ensureAudioReady() {
     if (audioCtx.state === 'suspended') {
         await audioCtx.resume();
+    }
+}
+
+function stopActiveSound() {
+    if (activeSound) {
+        clearTimeout(activeSound.timeoutId); // Stop the automated timeout from firing
+        activeSound.cleanup();               // Disconnect nodes instantly
+        activeSound = null;
     }
 }
 
@@ -219,10 +231,6 @@ if (page.myButton) {
     page.myButton.addEventListener('click', changeBackgroundColor);
 }
 
-let round = 0;
-let score = 0;
-let gameFreqs = [];
-
 if (page.eqGameGoButton) {
     page.eqGameGoButton.textContent = "New Game";
     if (localStorage.getItem('users') != null) {
@@ -235,6 +243,8 @@ if (page.eqGameGoButton) {
     page.eqGameGoButton.addEventListener('click', async() => {
 
         let [savedUsers, index] = getUserInfo();
+
+        stopActiveSound();
 
         page.gameOverText.textContent = "";
         page.guessFreqText.textContent = "";
@@ -253,9 +263,33 @@ if (page.eqGameGoButton) {
         const durationSetting = savedUsers[index].duration;
 
         // TODO: fix ugly passing htmlelement just to do boosted/cut boolean
-        generatePinkNoise(await ensureAudioReady, audioCtx, newFreq, durationSetting, page.eqBoostBox, page.eqGain6Box, 'pink-noise-processor');
-
+        activeSound = await generatePinkNoise(
+            await ensureAudioReady, 
+            audioCtx, 
+            newFreq, 
+            durationSetting, 
+            page.eqBoostBox, 
+            page.eqGain6Box, 
+            'pink-noise-processor'
+        );
     });
+}
+
+if (page.eqGameReplayButton) {
+    page.eqGameReplayButton.onclick = async() => {
+        let [savedUsers, index] = getUserInfo();
+        const durationSetting = savedUsers[index].duration;
+        stopActiveSound();
+        activeSound = await generatePinkNoise(
+            await ensureAudioReady, 
+            audioCtx, 
+            gameFreqs.at(-1), 
+            durationSetting, 
+            page.eqBoostBox, 
+            page.eqGain6Box, 
+            'pink-noise-processor'
+        );
+    }
 }
 
 if (page.lineContainer) {
@@ -319,7 +353,7 @@ if (page.lineContainer) {
             page.floorCeilingBox.style.opacity = '0';
         }, 100);
 
-        audioCtx.suspend();
+        stopActiveSound();
 
         if (guessFreq > floor && guessFreq < ceiling) {
             page.answerLine.style.background = "green";
@@ -328,6 +362,7 @@ if (page.lineContainer) {
             score += 1;
             page.scoreText.textContent = `Score: ${score}`;
             page.eqGameGoButton.disabled = false;
+            page.eqGameReplayButton.disabled = false;
         }
         else {
             page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz.`;
@@ -343,11 +378,7 @@ if (page.lineContainer) {
             score = 0;
             page.eqGameGoButton.textContent = "New Game";
             page.eqGameGoButton.disabled = false;
-
             page.eqGameReplayButton.disabled = false;
-            page.eqGameReplayButton.addEventListener('click', async() => {
-                generatePinkNoise(await ensureAudioReady, audioCtx, gameFreqs.at(-1), durationSetting, page.eqBoostBox, page.eqGain6Box, 'pink-noise-processor');
-            })
         }
     });
 }
