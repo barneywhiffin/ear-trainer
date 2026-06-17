@@ -259,6 +259,9 @@ section {
         width: 100px;
         height: 50px;
     }
+    button:enabled {
+        cursor: pointer;
+    }
 }
 
 .green-button {
@@ -274,6 +277,11 @@ section {
   transition-duration: 0.4s;
   cursor: pointer;
   margin-top: 10px;
+}
+
+.green-button:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
 dialog {

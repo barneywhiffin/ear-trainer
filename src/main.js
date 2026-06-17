@@ -63,10 +63,15 @@ if (page.openEqHowto) {
 const eqSettingsCheck = page.openEqSettings && page.eqCutBox && page.eqBoostBox && page.eqMixBox && page.closeEqSettings;
 
 if (eqSettingsCheck) {
-    page.openEqSettings.addEventListener("click", () => page.eqGameSettings.showModal());
 
     let boxes = [page.eqCutBox, page.eqBoostBox, page.eqMixBox];
     let [savedUsers, index] = getUserInfo();
+
+    if (index || index === 0) {
+        page.openEqSettings.disabled = false;
+    }
+
+    page.openEqSettings.addEventListener("click", () => page.eqGameSettings.showModal());
 
     for (let i = 0; i < boxes.length; i++) {
         const thisBox = boxes[i];
@@ -200,9 +205,9 @@ if (page.addUsernameButton) {
                 }
                 savedUsers.push(newUser);
             }
+            localStorage.setItem('users', JSON.stringify(savedUsers));
         }
 
-        localStorage.setItem('users', JSON.stringify(savedUsers));
         page.usernameTextbox.value = "";
         if (page.usernameDisplay) {
             page.usernameDisplay.textContent = `Username: ${username}`;
@@ -224,7 +229,6 @@ if (page.eqGameGoButton) {
         page.eqGameGoButton.disabled = false;
     }
     else {
-        // TODO: also disable settings button when no user...
         page.eqGoErrorText.textContent = "Please navigate to Account and create a username first";
     }
 
