@@ -238,6 +238,7 @@ if (page.eqGameGoButton) {
         page.answerLine.style.display = "none";
         page.floorLine.style.display = "none";
         page.ceilingLine.style.display = "none";
+        page.floorCeilingBox.style.display = "none";
         round += 1;
         page.eqGameGoButton.textContent = "Next Round";
         page.eqGameGoButton.disabled = true;
@@ -300,12 +301,19 @@ if (page.lineContainer) {
         const ceilingAsFreqIdx = adjIndex(guessCeiling, freqs);
         const ceilingAsPixels = boxWidth*(ceilingAsFreqIdx/nFreqs);
         
-        page.answerLine.style.marginLeft = `${answerAsPixels}px`;
-        page.floorLine.style.marginLeft = `${floorAsPixels}px`;
+        page.answerLine.style.left = `${answerAsPixels}px`;
+        page.floorLine.style.left = `${floorAsPixels}px`;
         page.floorLine.style.display = "block";
-        page.ceilingLine.style.marginLeft = `${ceilingAsPixels}px`;
+        page.ceilingLine.style.left = `${ceilingAsPixels}px`;
         page.ceilingLine.style.display = "block";
+        page.floorCeilingBox.style.left = `${floorAsPixels}px`;
+        page.floorCeilingBox.style.right = `${boxWidth-ceilingAsPixels}px`;
+        page.floorCeilingBox.style.opacity = '0.6';
+        page.floorCeilingBox.style.display = "block";
         page.line.style.display = "none";
+        setTimeout(() => {
+            page.floorCeilingBox.style.opacity = '0';
+        }, 100);
 
         audioCtx.suspend();
 
@@ -321,7 +329,7 @@ if (page.lineContainer) {
             page.resultText.textContent = `Incorrect :( it was ${displayAnswer}Hz.`;
             page.answerLine.style.background = "red";
             page.answerLine.style.display = "block";
-            // page.gameOverText.textContent = "Game Over";
+            page.gameOverText.textContent = "Game Over";
             let [savedUsers, index] = getUserInfo();
             const durationSetting = savedUsers[index].duration;
             savedUsers[index].scores.push(score);

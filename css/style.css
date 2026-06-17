@@ -216,9 +216,10 @@ section {
     top: 20px;
     width: 3px;
     height: 80%;
-    background: blue;
-    margin-left: 0px;
+    background: red;
+    left: 0px;
     display: none;
+    z-index: 1;
 }
 
 #floor-line {
@@ -227,7 +228,7 @@ section {
     width: 2px;
     height: 80%;
     background: white;
-    margin-left: 0px;
+    left: 0px;
     display: none;
 }
 
@@ -237,7 +238,19 @@ section {
     width: 2px;
     height: 80%;
     background: white;
-    margin-left: 0px;
+    left: 0px;
+    display: none;
+}
+
+#floor-ceiling-box {
+    position: absolute;
+    top: 20px;
+    height: 80%;
+    background: white;
+    opacity: 0.7;
+    left: 30px;
+    right: 300px;
+    transition: opacity 0.5s ease;
     display: none;
 }
 
