@@ -353,6 +353,14 @@ footer a {
     }
 }
 
+#game-mode {
+    background: teal;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
 .eq-gain-settings-area {
     margin: 10px auto 15px auto;
     width: 60%;
