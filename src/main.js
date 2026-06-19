@@ -16,7 +16,7 @@ let gameFreqs = [];
 let activeSound = null;
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
+  navigator.serviceWorker.register("/ear-trainer/sw.js");
 }
 
 window.addEventListener('load', async () => {
