@@ -38,3 +38,4 @@ export const scoresDisplayLeft2 = document.getElementById("scores-display-left2"
 export const scoresDisplayRight2 = document.getElementById("scores-display-right2");
 export const scoresDisplayLeft3 = document.getElementById("scores-display-left3");
 export const scoresDisplayRight3 = document.getElementById("scores-display-right3");
+export const gameModeDropdown = document.getElementById("game-mode");

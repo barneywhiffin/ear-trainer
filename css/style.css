@@ -337,6 +337,7 @@ footer a {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr 2fr 2fr 2fr;
+    padding-right: 20px;
     .gold-row {
         background: gold;
     }

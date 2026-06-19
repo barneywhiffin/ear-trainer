@@ -1,14 +1,15 @@
-import {maxIndex, adjIndex, geometricArray, getUserInfo, generatePinkNoise, getToleranceFromRound, roundCheck, changeBackgroundColor} from "./utils.js";
+import {maxIndex, adjIndex, unzipArray, geometricArray, getUserInfo, generatePinkNoise, getToleranceFromRound, roundCheck, changeBackgroundColor} from "./utils.js";
 import * as page from "./elements.js";
 
 const audioCtx = new AudioContext();
-
-// TODO: work out how to save different score types depending on game setting
-
 const lowestFreq = 62.5;
 const highestFreq = 8000;
 const nFreqs = 5000;
 const freqs = geometricArray(lowestFreq, highestFreq, nFreqs);
+const allB6Scores = [];
+const allB3Scores = [];
+const allC6Scores = [];
+const allC3Scores = [];
 let round = 0;
 let score = 0;
 let gameFreqs = [];
@@ -24,6 +25,7 @@ async function ensureAudioReady() {
     }
 }
 
+// TODO: learn how this works
 function stopActiveSound() {
     if (activeSound) {
         clearTimeout(activeSound.timeoutId); // Stop the automated timeout from firing
@@ -39,32 +41,66 @@ if (page.usernameDisplay) {
         page.usernameDisplay.textContent = `Username: ${savedUsername}`; 
     }
 }
+
 if (page.scoresDisplayLeft1) {
     let [savedUsers, index] = getUserInfo();
-    let allUsers = [];
-    let allScores = [];
+
     for (let i = 0; i < savedUsers.length; i++) {
         for (let j = 0; j < savedUsers[i].scores.length; j++) {
-            allUsers.push(savedUsers[i].username);
-            allScores.push(savedUsers[i].scores[j]);
+            const user = savedUsers[i].username;
+            const score = savedUsers[i].scores[j];
+            if (score[0] === 'boost' && score[1] === '6dB') {
+                allB6Scores.push([user, score[2]]);
+            }
+            else if (score[0] === 'boost' && score[1] === '3dB') {
+                allB3Scores.push([user, score[2]]);
+            }
+            else if (score[0] === 'cut' && score[1] === '6dB') {
+                allC6Scores.push([user, score[2]]);
+            }
+            else if (score[0] === 'cut' && score[1] === '3dB') {
+                allC3Scores.push([user, score[2]]);
+            }
         }
     }
+    displayScores(allB6Scores, page.scoresDisplayLeft1, page.scoresDisplayRight1, page.scoresDisplayLeft2, page.scoresDisplayRight2, page.scoresDisplayLeft3, page.scoresDisplayRight3);
+
+    page.gameModeDropdown.addEventListener('change', function(event) {
+        switch (this.value) {
+            case "B6":
+                displayScores(allB6Scores, page.scoresDisplayLeft1, page.scoresDisplayRight1, page.scoresDisplayLeft2, page.scoresDisplayRight2, page.scoresDisplayLeft3, page.scoresDisplayRight3);
+                break
+            case "B3":
+                displayScores(allB3Scores, page.scoresDisplayLeft1, page.scoresDisplayRight1, page.scoresDisplayLeft2, page.scoresDisplayRight2, page.scoresDisplayLeft3, page.scoresDisplayRight3);
+                break
+            case "C6":
+                displayScores(allC6Scores, page.scoresDisplayLeft1, page.scoresDisplayRight1, page.scoresDisplayLeft2, page.scoresDisplayRight2, page.scoresDisplayLeft3, page.scoresDisplayRight3);
+                break
+            case "C3":
+                displayScores(allC3Scores, page.scoresDisplayLeft1, page.scoresDisplayRight1, page.scoresDisplayLeft2, page.scoresDisplayRight2, page.scoresDisplayLeft3, page.scoresDisplayRight3);
+                break
+        }
+    })
+}
+
+function displayScores(userAndScoreArray, u1, s1, u2, s2, u3, s3) {
+    const [allUsers, allScores] = unzipArray(userAndScoreArray);
 
     let topScoreIndex = maxIndex(allScores);
-    page.scoresDisplayLeft1.textContent = allUsers[topScoreIndex]; 
-    page.scoresDisplayRight1.textContent = allScores[topScoreIndex]; 
+    u1.textContent = allUsers[topScoreIndex];
+    s1.textContent = allScores[topScoreIndex];
     allUsers.splice(topScoreIndex, 1);  
     allScores.splice(topScoreIndex, 1); 
-    
+
     topScoreIndex = maxIndex(allScores);
-    page.scoresDisplayLeft2.textContent = allUsers[topScoreIndex]; 
-    page.scoresDisplayRight2.textContent = allScores[topScoreIndex]; 
+    u2.textContent = allUsers[topScoreIndex]; 
+    s2.textContent = allScores[topScoreIndex]; 
     allUsers.splice(topScoreIndex, 1);  
     allScores.splice(topScoreIndex, 1);
 
     topScoreIndex = maxIndex(allScores);
-    page.scoresDisplayLeft3.textContent = allUsers[topScoreIndex]; 
-    page.scoresDisplayRight3.textContent = allScores[topScoreIndex];  
+    u3.textContent = allUsers[topScoreIndex]; 
+    s3.textContent = allScores[topScoreIndex]; 
 }
 
 if (page.openEqHowto) {
@@ -183,7 +219,7 @@ if (page.addUsernameButton) {
         const username = page.usernameTextbox.value;
         let [savedUsers, index] =  getUserInfo()
 
-        if (!index) {
+        if (index === null) {
             let users = [];
             let newUser = {
                 username: username,
@@ -338,6 +374,9 @@ if (page.lineContainer) {
         const floorAsPixels = boxWidth*(floorAsFreqIdx/nFreqs);
         const ceilingAsFreqIdx = adjIndex(guessCeiling, freqs);
         const ceilingAsPixels = boxWidth*(ceilingAsFreqIdx/nFreqs);
+
+        // TODO: bug for specifically 8000Hz i saw, that the line was outside the box
+        // i think it needs like (half?) its width subtracted from final calced position
         
         page.answerLine.style.left = `${answerAsPixels}px`;
         page.floorLine.style.left = `${floorAsPixels}px`;
@@ -371,7 +410,11 @@ if (page.lineContainer) {
             page.gameOverText.textContent = "Game Over";
             let [savedUsers, index] = getUserInfo();
             const durationSetting = savedUsers[index].duration;
-            savedUsers[index].scores.push(score);
+
+            const eqChoiceSetting = savedUsers[index].eqChoice;
+            const eqGainSetting = savedUsers[index].eqGain;
+
+            savedUsers[index].scores.push([eqChoiceSetting, eqGainSetting, score]);
             localStorage.setItem('users', JSON.stringify(savedUsers));
             page.scoreText.textContent = "";
             round = 0;

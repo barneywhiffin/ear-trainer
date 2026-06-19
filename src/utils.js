@@ -7,7 +7,7 @@ export function maxIndex(arr) {
             idx = i;
         }
     }
-    return idx;
+    return idx
 }
 
 export function adjIndex(val, arr) {
@@ -18,6 +18,16 @@ export function adjIndex(val, arr) {
         }
     }
     return idx;
+}
+
+export function unzipArray(arr) {
+    let leftArray = [];
+    let rightArray = [];
+    for (let i = 0; i < arr.length; i++) {
+        leftArray.push(arr[i][0]);
+        rightArray.push(arr[i][1]);
+    }
+    return [leftArray, rightArray]
 }
 
 export function geometricArray(start, end, n) {
