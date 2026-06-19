@@ -15,6 +15,10 @@ let score = 0;
 let gameFreqs = [];
 let activeSound = null;
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+
 window.addEventListener('load', async () => {
     await audioCtx.audioWorklet.addModule('../src/pink-noise.js');
 });
