@@ -361,9 +361,9 @@ if (page.lineContainer) {
     page.lineContainer.addEventListener('click', function(event) {
         if (!roundCheck(round, score)) return;
 
-        const answer = gameFreqs.at(-1);
+        // const answer = gameFreqs.at(-1);
+        const answer = 8000;
         const tol = getToleranceFromRound(2, 1.2, 10, round);
-        console.log(tol);
         const floor = answer/tol;
         const ceiling = answer*tol;
 
@@ -380,7 +380,9 @@ if (page.lineContainer) {
         const guessCeiling = guessFreq*tol;
 
         const answerAsFreqIdx = adjIndex(answer, freqs);
-        const answerAsPixels = boxWidth*(answerAsFreqIdx/nFreqs);
+        const lineWidth = parseFloat(getComputedStyle(page.answerLine).width);
+        const answerAsPixels = (boxWidth-lineWidth)*(answerAsFreqIdx/nFreqs);
+
         const floorAsFreqIdx = adjIndex(guessFloor, freqs);
         const floorAsPixels = boxWidth*(floorAsFreqIdx/nFreqs);
         const ceilingAsFreqIdx = adjIndex(guessCeiling, freqs);
@@ -390,6 +392,7 @@ if (page.lineContainer) {
         // i think it needs like (half?) its width subtracted from final calced position
         
         page.answerLine.style.left = `${answerAsPixels}px`;
+
         page.floorLine.style.left = `${floorAsPixels}px`;
         page.floorLine.style.display = "block";
         page.ceilingLine.style.left = `${ceilingAsPixels}px`;
