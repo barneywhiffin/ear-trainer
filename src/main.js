@@ -361,8 +361,7 @@ if (page.lineContainer) {
     page.lineContainer.addEventListener('click', function(event) {
         if (!roundCheck(round, score)) return;
 
-        // const answer = gameFreqs.at(-1);
-        const answer = 8000;
+        const answer = gameFreqs.at(-1);
         const tol = getToleranceFromRound(2, 1.2, 10, round);
         const floor = answer/tol;
         const ceiling = answer*tol;
