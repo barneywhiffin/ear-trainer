@@ -15,8 +15,15 @@ let score = 0;
 let gameFreqs = [];
 let activeSound = null;
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/ear-trainer/sw.js");
+// only register the service worker if we are not on localhost
+if ('serviceWorker' in navigator && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker registered successfully on production!'))
+      .catch(err => console.error('Service Worker registration failed:', err));
+  });
+} else {
+  console.log('Skipping Service Worker registration on local development.');
 }
 
 window.addEventListener('load', async () => {
