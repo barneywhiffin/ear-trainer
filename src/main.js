@@ -386,9 +386,6 @@ if (page.lineContainer) {
         const floorAsPixels = boxWidth*(floorAsFreqIdx/nFreqs);
         const ceilingAsFreqIdx = adjIndex(guessCeiling, freqs);
         const ceilingAsPixels = boxWidth*(ceilingAsFreqIdx/nFreqs);
-
-        // TODO: bug for specifically 8000Hz i saw, that the line was outside the box
-        // i think it needs like (half?) its width subtracted from final calced position
         
         page.answerLine.style.left = `${answerAsPixels}px`;
 

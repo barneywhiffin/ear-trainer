@@ -12,7 +12,7 @@ class PinkNoiseProcessor extends AudioWorkletProcessor {
     this.b = [0, 0, 0, 0, 0, 0, 0];
   }
 
-  // the browser's auio engine repeatedly calls processor.process(...)
+  // the browser's audio engine repeatedly calls processor.process(...)
 
   process(inputs, outputs, parameters) {
 
@@ -29,6 +29,8 @@ class PinkNoiseProcessor extends AudioWorkletProcessor {
       // and obtain semi random value through this algo
       for (let i = 0; i < channel.length; i++) {
         let white = Math.random() * 2 - 1;
+        // this refers to the current instance of PinkNoiseProcessor
+        // so processor.b
         this.b[0] = 0.99886 * this.b[0] + white * 0.0555179;
         this.b[1] = 0.99332 * this.b[1] + white * 0.0750759;
         this.b[2] = 0.96900 * this.b[2] + white * 0.1538520;
