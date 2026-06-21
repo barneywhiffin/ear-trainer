@@ -1,3 +1,3 @@
 # Ear Trainer
 
-WIP. This will be a web app built using Vanilla JS which challenges the user to identify the frequency range being boosted or cut.
+This is a web app built using Vanilla JS which will contain a few audio related games. Currently, there is 1 game which challenges the user to identify the centre frequency being boosted or cut while listening to pink noise.
